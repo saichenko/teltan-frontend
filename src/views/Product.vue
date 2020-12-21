@@ -5,40 +5,42 @@
         <div class="profile__row">
 
           <div class="profile__column user-profile">
-            <div class="user-profile__name">User</div>
-            <div class="user-profile__image"><img src="@/assets/images/user-photo.jpg" alt="user photo"></div>
-            <div class="user-profile__status">online <span></span></div>
-            <a href="#" class="user-profile__button btn"><span>message</span></a>
+            <div class="user-profile__name">{{product.user.username}}</div>
+            <div class="user-profile__image"><img :src="product.user.profile.picture" alt="user photo"></div>
+            <a href="#" class="user-profile__button btn"><span>Message</span></a>
           </div>
 
           <div class="profile__column user-content">
-            <div class="user-content__title">Sollicitant homines non sunt</div>
-            <div class="user-content__score">7800 &#8362;</div>
+            <div v-if="redemption" class="user-content__title" align="center"><h1><b>Drawing</b></h1></div>
+            <div v-else class="user-content__title" align="center"><h1><b>Advertisement</b></h1></div>
+            <hr>
+            <div class="user-content__title">{{ product.name }}</div>
+            <div class="user-content__score"><p>{{ product.price }} &#8362;</p></div>
             <div class="user-content__galerey">
-              <div class="user-content__image"><img src="@/assets/images/image-item.jpg" alt=""></div>
-              <div class="user-content__image"><img src="@/assets/images/image-item.jpg" alt=""></div>
-              <div class="user-content__image"><img src="@/assets/images/image-item.jpg" alt=""></div>
-              <div class="user-content__image"><img src="@/assets/images/image-item.jpg" alt=""></div>
+              <div v-for="productImage in productImages" v-bind:key="productImage.id" class="user-content__image">
+                <img :src="productImage.image">
+              </div>
             </div>
-            <div class="user-content__text">Opus igitur est dicere possit dura omni specie. "Tu autem in specie, non
-              videntur, nec omnimo res est." Et examine ab eis praecepta eius quae habes, et primo et principaliter
-              consistit in hoc, utrum sit de rebus, quae sunt in nostra potestate, vel non sunt quam illi: et, si agatur
-              de
-            </div>
+            <div class="user-content__text">{{ product.description }}</div>
           </div>
 
-          <div class="profile__column user-result">
+          <div v-if="redemption" class="profile__column user-result">
             <div class="user-result__column">
-              <div class="user-result__column-off"><span>87%</span></div>
+              <div class="user-result__column-off"><span>{{ redemption.percent }}%</span></div>
               <div class="user-result__column-on"></div>
             </div>
-            <a href="#" class="user-result__button btn btn-d"><span>become a sponsor</span></a>
+            <a href="#" class="user-result__button btn btn-d"><span>Become a sponsor</span></a>
           </div>
 
         </div>
-
       </div>
     </section>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
 
     <div class="popup popup-noMoney">
       <div class="popup-table table">
@@ -188,8 +190,39 @@
 </template>
 
 <script>
+import Vue from 'vue'
+import axios from 'axios'
+import VueAxios from 'vue-axios'
+
+Vue.use(VueAxios, axios)
+
 export default {
-  name: 'Profile'
+  name: 'Profile',
+  props: ['website'],
+  data () {
+    return {
+      product: undefined,
+      productImages: undefined,
+      user: undefined,
+      redemption: undefined,
+    }
+  },
+  mounted () {
+    console.log(this.website + 'api/product/' + this.$route.params.id)
+    Vue.axios.get(this.website + 'api/product/' + this.$route.params.id)
+      .then((resp) => {
+        this.product = resp.data
+      })
+    Vue.axios.get(this.website + 'api/product-image/?product=' + this.$route.params.id)
+      .then((resp) => {
+        this.productImages = resp.data.results
+      })
+
+    Vue.axios.get(this.website + 'drawings/api/get-tickets-redemption-amount/' + this.$route.params.id)
+      .then((resp) => {
+        this.redemption = resp.data
+      })
+  }
 }
 </script>
 
