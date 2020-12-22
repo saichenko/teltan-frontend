@@ -238,7 +238,7 @@ export default {
     }
   },
   mounted() {
-    Vue.axios.get(this.website + 'api/product/')
+    Vue.axios.get('api/product/')
       .then((resp) => {
         this.products = resp.data.results
 

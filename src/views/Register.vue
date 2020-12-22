@@ -1,6 +1,6 @@
 <template>
   <div id="logreg-forms">
-    <form action="/signup/" class="form-signup">
+    <form @submit.prevent="handleSubmit" class="form-signup">
       <div class="social-login">
         <button class="btn facebook-btn social-btn" type="button"><span><i class="fab fa-facebook-f"></i> Sign up with Facebook</span>
         </button>
@@ -12,13 +12,15 @@
 
       <p style="text-align:center">OR</p>
 
-      <input type="text" id="user-name" class="form-control" placeholder="Username" required autofocus="">
-      <input type="text" id="first-name" class="form-control" placeholder="First name" autofocus="">
-      <input type="text" id="last-name" class="form-control" placeholder="Last name" autofocus="">
-      <input type="email" id="email" class="form-control" placeholder="Email" required autofocus="">
-      <vue-tel-input v-bind="bindProps"></vue-tel-input>
-      <input type="password" id="pass" class="form-control" placeholder="Password" required autofocus="">
-      <input type="password" id="repeatpass" class="form-control" placeholder="Repeat Password" required autofocus="">
+      <input type="text" v-model="username" class="form-control" placeholder="Username" required autofocus="">
+      <input type="text" v-model="first_name" class="form-control" placeholder="First name" autofocus="">
+      <input type="text" v-model="last_name" class="form-control" placeholder="Last name" autofocus="">
+      <input type="email" v-model="email" class="form-control" placeholder="Email" required autofocus="">
+      <vue-tel-input v-model="phone" v-on:country-changed="countryChanged" v-bind="bindProps"
+                     style="height: 45px; margin-bottom: 2px;"></vue-tel-input>
+      <input type="password" v-model="password" class="form-control" placeholder="Password" required autofocus="">
+      <input type="password" v-model="password2" class="form-control" placeholder="Repeat Password" required
+             autofocus="">
 
       <button class="btn btn-primary btn-block" type="submit"><i class="fas fa-user-plus"></i> Sign Up</button>
       <a href="#" id="cancel_signup"><i class="fas fa-angle-left"></i>Back</a>
@@ -27,34 +29,66 @@
 </template>
 
 <script>
-import Vue from "vue"
-import axios from 'axios'
-import VueAxios from 'vue-axios'
+import Vue from 'vue'
 import VueTelInput from 'vue-tel-input'
-// import 'vue-tel-input/dist/vue-tel-input.css';
+import axios from "axios";
 
 Vue.use(VueTelInput)
-Vue.use(VueAxios, axios)
 export default {
   name: 'Register',
   props: ['website'],
   data() {
     return {
+      username: undefined,
+      first_name: undefined,
+      last_name: undefined,
+      email: undefined,
+      password: undefined,
+      password2: undefined,
+
+      phone: undefined,
+      country: undefined,
+
       bindProps: {
         dynamicPlaceholder: true,
+        validCharactersOnly: true,
+        maxLen: 18,
         disabledFetchingCountry: false,
         preferredCountries: ['IL', 'US', 'RU'],
       }
     }
   },
-  mounted() {
-    console.log(this.website + 'api/country/')
-    Vue.axios.get(this.website + 'api/country/')
-      .then((resp) => {
-        console.log(resp.data.results)
-        this.countries = resp.data.results
+  methods: {
+    countryChanged(country) {
+      this.country = country.dialCode
+    },
+    async handleSubmit() {
+      console.log({
+        username: this.username,
+        first_name: this.first_name,
+        last_name: this.last_name,
+        email: this.email,
+        password: this.username,
+        profile: {
+          phone_num_code: this.country,
+          phone_num: this.phone
+        }
       })
-  },
+      const response = await axios.post('api/user/', {
+        username: this.username,
+        first_name: this.first_name,
+        last_name: this.last_name,
+        email: this.email,
+        password: this.username,
+        profile: {
+          phone_num_code: parseInt(this.country),
+          phone_num: this.phone
+        }
+      })
+
+      localStorage.setItem('token', response.data.token)
+    }
+  }
 }
 </script>
 

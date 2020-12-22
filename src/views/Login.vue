@@ -1,6 +1,6 @@
 <template>
   <div id="logreg-forms">
-    <form class="form-signin">
+    <form class="form-signin" @submit.prevent="handleSubmit">
       <h1 class="h3 mb-3 font-weight-normal" style="text-align: center"> Sign in</h1>
       <div class="social-login">
         <button class="btn facebook-btn social-btn" type="button"><span><i class="fab fa-facebook-f"></i> Sign in with Facebook</span>
@@ -9,13 +9,12 @@
         </button>
       </div>
       <p style="text-align:center"> OR </p>
-      <input type="email" id="inputEmail" class="form-control" placeholder="Username" required="" autofocus="">
-      <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="">
+      <input type="text" v-model="username" class="form-control" placeholder="Username" required autofocus="">
+      <input type="text" v-model="password" class="form-control" placeholder="Password" required>
 
       <button class="btn btn-success btn-block" type="submit"><i class="fas fa-sign-in-alt"></i> Sign in</button>
       <a href="#" id="forgot_pswd">Forgot password?</a>
       <hr>
-      <!-- <p>Don't have an account!</p>  -->
       <button class="btn btn-primary btn-block" type="button" id="btn-signup"><i class="fas fa-user-plus"></i> Sign up
         New Account
       </button>
@@ -24,8 +23,27 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
-  name: "Login"
+  name: 'Login',
+  props: ['website'],
+  data() {
+    return {
+      username: '',
+      password: '',
+    }
+  },
+  methods: {
+    async handleSubmit() {
+      const response = await axios.post(this.website + 'api-token-auth/', {
+        username : this.username,
+        password: this.password
+      })
+
+      localStorage.setItem('token', response.data.token)
+    }
+  }
 }
 </script>
 
