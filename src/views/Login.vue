@@ -1,21 +1,30 @@
 <template>
   <div id="logreg-forms">
     <form class="form-signin" @submit.prevent="handleSubmit">
-      <h1 class="h3 mb-3 font-weight-normal" style="text-align: center"> Sign in</h1>
+      <h4 class="h3 mb-3 font-weight-normal" style="text-align: center"> Sign in</h4>
       <div class="social-login">
-        <button class="btn facebook-btn social-btn" type="button"><span><i class="fab fa-facebook-f"></i> Sign in with Facebook</span>
-        </button>
-        <button class="btn google-btn social-btn" type="button"><span><i class="fab fa-google-plus-g"></i> Sign in with Google+</span>
+        <button class="btn facebook-btn social-btn" style="width: 100%;" type="button"><span><i
+          class="fab fa-facebook-f"></i> Sign in with Facebook</span>
         </button>
       </div>
-      <p style="text-align:center"> OR </p>
+      <div class="social-login">
+        <button class="btn google-btn social-btn" style="width: 100%;" type="button"><span><i
+          class="fab fa-google-plus-g"></i> Sign in with Google+</span>
+        </button>
+      </div>
+      <h5 style="text-align:center"> OR </h5>
       <input type="text" v-model="username" class="form-control" placeholder="Username" required autofocus="">
       <input type="text" v-model="password" class="form-control" placeholder="Password" required>
-
-      <button class="btn btn-success btn-block" type="submit"><i class="fas fa-sign-in-alt"></i> Sign in</button>
+      <br>
+      <br>
+      <button class="btn waves-effect btn-block waves-light" style="width: 100%;" type="submit"><i
+        class="fas fa-sign-in-alt"></i> Sign in
+      </button>
       <a href="#" id="forgot_pswd">Forgot password?</a>
       <hr>
-      <button class="btn btn-primary btn-block" type="button" id="btn-signup"><i class="fas fa-user-plus"></i> Sign up
+      <br>
+      <button class="btn waves-effect btn-block cyan accent-4" style="width: 100%;" type="button" id="btn-signup"><i
+        class="fas fa-user-plus"></i> Sign up
         New Account
       </button>
     </form>
@@ -24,6 +33,7 @@
 
 <script>
 import axios from 'axios'
+import {mapActions} from 'vuex'
 
 export default {
   name: 'Login',
@@ -35,20 +45,20 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['login']),
     async handleSubmit() {
       const response = await axios.post(this.website + 'api-token-auth/', {
-        username : this.username,
+        username: this.username,
         password: this.password
       })
-
-      localStorage.setItem('token', response.data.token)
+      this.login(response.data.user, response.data.token)
+      this.$router.push('/');
     }
   }
 }
 </script>
 
 <style scoped>
-@import 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css';
 @import 'https://use.fontawesome.com/releases/v5.3.1/css/all.css';
 
 #logreg-forms {
@@ -112,7 +122,6 @@ export default {
   width: 200px;
   border: 1px solid red;
 }
-
 
 #logreg-forms button[type="submit"] {
   margin-top: 10px;
@@ -180,6 +189,5 @@ export default {
   #logreg-forms .google-btn:after {
     content: 'Google+';
   }
-
 }
 </style>

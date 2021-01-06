@@ -1,57 +1,54 @@
 <template>
   <div>
     <section class="banner">
-
-<!--      <VueSlickCarousel v-bind="settings" class="banner__row">-->
-<!--      v-for="product in sortedProducts" v-key:="product.id"-->
       <div class="banner__row">
-          <div class="banner__info info-banner">
-            <div class="info-banner__percent">95%</div>
-            <div class="info-banner__time"><img src="@/assets/images/icons/clock.svg"> time left</div>
-          </div>
-          <div class="banner__image">
-            <VueSlickCarousel v-bind="settings">
+        <div class="banner__info info-banner">
+          <div class="info-banner__percent">95%</div>
+          <div class="info-banner__time"><img src="@/assets/images/icons/clock.svg"> time left</div>
+        </div>
+        <div class="banner__image">
+          <VueSlickCarousel v-bind="settings">
             <div v-for="product in sortedProducts" v-key:="product.id" class="banner__slider">
               <div class="banner__slide">
-<!--                <img :src="product.main_image" width="15%">-->
+                <!--                <img :src="product.main_image" width="15%">-->
                 <img :src="product.main_image" width="25%">
               </div>
             </div>
-            </VueSlickCarousel>
-            <a href="#noMoney" class="banner__button btn pl"><span>Become a sponsor</span></a>
-          </div>
+          </VueSlickCarousel>
+          <a href="#noMoney" class="banner__button btn pl"><span>Become a sponsor</span></a>
         </div>
-<!--      </VueSlickCarousel>-->
-
-
+      </div>
     </section>
 
     <main class="main">
       <div class="container">
-        <h2 class="main__title">Products</h2>
+        <h3 class="center"><b>Products</b></h3>
         <div class="main__content">
-
-          <div class="main__item item-main" v-for="product in products" v-bind:key="product.id">
+          <div class="main__item item-main" v-for="product in allProducts" v-bind:key="product.id">
             <div class="item-main__wrap">
               <div class="item-main__content">
                 <div class="item-main__image">
                   <div class="item-main__user"><img :src="product.user.profile.picture" :alt="product.user.username">
                   </div>
                   <div class="item-main__rating">
-                    <img src="@/assets/images/icons/star.svg" alt="">
-                    <img src="@/assets/images/icons/star.svg" alt="">
-                    <img src="@/assets/images/icons/star.svg" alt="">
-                    <img src="@/assets/images/icons/star.svg" alt="">
+                    <img src="@/assets/images/icons/star.svg">
+                    <img src="@/assets/images/icons/star.svg">
+                    <img src="@/assets/images/icons/star.svg">
+                    <img src="@/assets/images/icons/star.svg">
                   </div>
                   <img :src="product.main_image">
                 </div>
-                <div class="item-main__text">{{ product.description }}</div>
+                <div class="item-main__text"><p class="flow-text">{{ product.description }}</p></div>
               </div>
               <div class="item-main__control">
                 <div class="item-main__percent">84% time left</div>
-                <router-link :to="`/product/${product.id}`" class="item-main__button btn btn-d"><span>View</span>
-                </router-link>
-                <a href="#sponsor" class="item-main__button btn pl"><span>Become a sponsor</span></a>
+                <p class="center-align">
+                  <router-link :to="`/product/${product.id}`" class="waves-effect waves-light btn"><span>View</span>
+                  </router-link>
+                  <br>
+                  <br>
+                  <a href="#sponsor" class="item-main__button btn pl"><span>Become a sponsor</span></a>
+                </p>
               </div>
             </div>
           </div>
@@ -206,23 +203,20 @@
 </template>
 
 <script>
-import Vue from 'vue'
-import axios from 'axios'
-import VueAxios from 'vue-axios'
 import VueSlickCarousel from 'vue-slick-carousel'
 import 'vue-slick-carousel/dist/vue-slick-carousel.css'
 import 'vue-slick-carousel/dist/vue-slick-carousel-theme.css'
+import {mapGetters} from 'vuex'
 
-Vue.use(VueAxios, axios)
 export default {
   name: 'Home',
   props: ['website'],
   components: {
     VueSlickCarousel,
   },
+  computed: mapGetters(['allProducts']),
   data() {
     return {
-      products: undefined,
       sortedProducts: undefined,
       settings: {
         "dots": true,
@@ -236,18 +230,9 @@ export default {
         'autoplay': true,
       }
     }
-  },
-  mounted() {
-    Vue.axios.get('api/product/')
-      .then((resp) => {
-        this.products = resp.data.results
-
-        this.sortedProducts = this.products.sort((a, b) => a.price - b.price)
-      })
-  },
+  }
 }
 </script>
 
 <style scoped>
-
 </style>

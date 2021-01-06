@@ -8,14 +8,19 @@
 
 <script>
 import MainLayout from './layouts/MainLayout'
+import {mapActions, mapGetters} from 'vuex'
 
 export default {
   name: 'App',
   components: {
     MainLayout
   },
+  methods: mapActions(['fetchProducts']),
+  async mounted() {
+    await this.fetchProducts();
+  },
   computed: {
-    layout () {
+    layout() {
       console.log(this.$route.meta)
       return (this.$route.meta.layout || 'main') + '-layout'
     }
@@ -24,5 +29,6 @@ export default {
 </script>
 
 <style>
-@import "./assets/css/style.css";
+@import './assets/css/style.css';
+@import 'https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css';
 </style>

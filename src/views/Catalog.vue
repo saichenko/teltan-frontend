@@ -17,7 +17,7 @@
       <div class="catalog__section section">
         <h3 class="section__title">Электроника</h3>
         <table class="section__table table-section">
-          <tr v-for="product in products" v-bind:key="product.id">
+          <tr v-for="product in allProducts" v-bind:key="product.id">
             <td class="table-section__user"><img :src="product.main_image" alt=""></td>
             <td class="table-section__text"><router-link :to="`/product/${product.id}`">{{product.name}}</router-link></td>
             <td class="table-section__value"><span>80%</span></td>
@@ -28,9 +28,6 @@
 
     </div>
   </section>
-  <!--  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>-->
-  <!--  <script src="../src/assets/js/slick.min.js"></script>-->
-  <!--  <script src="../src/assets/js/script.js"></script>-->
 </template>
 
 <script>
@@ -38,16 +35,16 @@ import Vue from 'vue'
 import VueSlickCarousel from 'vue-slick-carousel'
 import 'vue-slick-carousel/dist/vue-slick-carousel.css'
 import 'vue-slick-carousel/dist/vue-slick-carousel-theme.css'
-import axios from 'axios'
-import VueAxios from 'vue-axios'
+import {mapGetters} from 'vuex'
 
-Vue.use(VueAxios, axios)
+
 export default {
   name: 'Catalog',
   props: ['website'],
   components: {
     VueSlickCarousel
   },
+  computed: mapGetters(['allProducts']),
   data () {
     return {
       products: undefined,
@@ -93,13 +90,6 @@ export default {
     }
   },
   mounted () {
-    console.log(this.website + 'api/product/')
-    Vue.axios.get(this.website + 'api/product/')
-      .then((resp) => {
-        console.log(resp)
-        this.products = resp.data.results
-      })
-
     Vue.axios.get(this.website + 'api/category/')
       .then((resp) => {
         console.log(resp.data.results)

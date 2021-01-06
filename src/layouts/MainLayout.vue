@@ -1,55 +1,63 @@
 <template>
   <div>
-    <header class="header">
-      <div class="container">
-        <div class="header__body">
-          <router-link to="/" class="header__logo">
-            <img src="@/assets/images/logo.png" alt="Teltan">
-          </router-link>
-          <nav class="header__menu">
-            <router-link to="/" class="header__link">Home</router-link>
-            <router-link to="/catalog" class="header__link">Catalog</router-link>
-            <a href="#" class="header__link">Contact</a>
-            <a href="#" class="header__link">About</a>
-          </nav>
-          <div class="header__content">
-            <div class="header__item item-user">
-              <img src="@/assets/images/icons/user-avatar.svg" alt="User">
-              <div class="item-user__block">
-                <div class="item-user__header">
-                  <div class="item-user__icon"><img src="@/assets/images/icons/user.svg" alt="User avatar"></div>
-                  <div class="item-user__name">User-name</div>
-                </div>
-                <a href="profile.html" class="item-user__link">Profile</a>
-                <a href="#" class="item-user__link">History</a>
-                <a href="#" class="item-user__link">sign out</a>
-              </div>
-            </div>
-            <div class="header__item item-balance">
-              <img src="@/assets/images/icons/wallet.svg" alt="Balance">
-              <div class="item-balance__block">
-                <div class="item-balance__title">balance: <img src="@/assets/images/icons/coins.svg" alt=""> 10.0</div>
-                <div class="item-balance__text">Tenete ergo quod si servitus quae natura liber, et aliena
-                  tua tunc impedilur. Dolebis, et turbabuntur
-                </div>
-                <div class="item-balance__block-control">
-                  <a href="#" class="item-balance__link btn"><span>add</span></a>
-                  <div class="item-balance__rate">1 <img src="@/assets/images/icons/coins-icon.svg" alt=""> = 1$</div>
-                  <a href="#" class="item-balance__link btn"><span>withdraw</span></a>
-                </div>
-              </div>
-            </div>
-            <a href="#declaration" class="header__item pl"><img src="@/assets/images/icons/basket.svg" alt="Basket"></a>
-            <a href="#" class="header__item"><img src="@/assets/images/icons/email.svg" alt="Email"></a>
-          </div>
-          <div class="icon-menu">
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
-        </div>
+    <nav>
+      <div class="nav-wrapper teal lighten-3">
+        <ul id="dropdown1" class="dropdown-content">
+          <li><router-link to="/profile">My Profile</router-link></li>
+          <li><router-link to="/additem">Place an ad</router-link></li>
+          <li><a href="#!">History</a></li>
+          <li class="divider"></li>
+          <li><a v-on:click="logout">Logout</a></li>
+        </ul>
+
+        <router-link to="/"><img class="brand-logo left nav-logo" src="@/assets/images/logo.png" width="250px">
+        </router-link>
+        <ul class="hide-on-med-and-down" style="margin-left: 30%">
+          <li>
+            <router-link to="/" class="big-font">Home</router-link>
+          </li>
+          <li>
+            <router-link to="/catalog" class="big-font">Catalog</router-link>
+          </li>
+          <li>
+            <router-link to="/about" class="big-font">About</router-link>
+          </li>
+          <li>
+            <router-link to="/contact" class="big-font">Contact</router-link>
+          </li>
+          <li v-if="getUser">
+            <router-link to="/additem" class="big-font">Place an ad</router-link>
+          </li>
+        </ul>
+        <ul class="right hide-on-med-and-down" v-if="getUser">
+          <li>
+            <router-link to="/messages"><i class="material-icons" style="font-size: 35px; vertical-align:middle;">account_balance_wallet</i>
+            </router-link>
+          </li>
+          <li>
+            <router-link to="/messages"><i class="material-icons"
+                                           style="font-size: 35px; vertical-align:middle;">email</i>
+            </router-link>
+          </li>
+          <li><a class="dropdown-trigger" ref="dropdown1" data-target="dropdown1"><p class="big-font">{{getUser.username }}&nbsp<img class="circle responsive-img" :src="'http://localhost:8000' + getUser.profile.picture" width="40"></p></a></li>
+        </ul>
+        <ul v-else class="right hide-on-med-and-down">
+          <li>
+            <router-link to="/login" class="big-font">Login</router-link>
+          </li>
+          <li>
+            <router-link to="/register" class="big-font">Sign up</router-link>
+          </li>
+        </ul>
+        <a href="#" data-target="mobile-demo" class="right sidenav-trigger"><i class="material-icons">menu</i></a>
       </div>
-    </header>
+    </nav>
+    <ul class="sidenav" id="mobile-demo">
+      <li><a href="sass.html">Sass</a></li>
+      <li><a href="badges.html">Components</a></li>
+      <li><a href="collapsible.html">Javascript</a></li>
+      <li><a href="mobile.html">Mobile</a></li>
+    </ul>
 
     <router-view/>
 
@@ -64,7 +72,6 @@
               wants to be simple. We will help programmers build up concepts in different programming languages that
               include C, C++, Java, HTML, CSS, Bootstrap, JavaScript, PHP, Android, SQL and Algorithm.</p>
           </div>
-
           <div class="col-xs-6 col-md-3">
             <h6>Categories</h6>
             <ul class="footer-links">
@@ -76,7 +83,6 @@
               <li><a href="http://scanfcode.com/category/templates/">Templates</a></li>
             </ul>
           </div>
-
           <div class="col-xs-6 col-md-3">
             <h6>Quick Links</h6>
             <ul class="footer-links">
@@ -97,7 +103,6 @@
               <a href="#">Scanfcode</a>.
             </p>
           </div>
-
           <div class="col-md-4 col-sm-6 col-xs-12">
             <ul class="social-icons">
               <li><a class="facebook" href="#"><i class="fa fa-facebook"></i></a></li>
@@ -109,17 +114,35 @@
         </div>
       </div>
     </footer>
-<!--    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>-->
-
   </div>
 </template>
 
 <script>
+import {mapGetters, mapActions} from 'vuex'
+
 export default {
-  name: 'main'
+  name: 'main',
+  computed: mapGetters(['getUser']),
+  methods: {
+    ...mapActions(['logout'])
+  },
+  mounted () {
+    M.Dropdown.init(this.$refs.dropdown1, {
+      coverTrigger: false,
+    })
+  }
 }
 </script>
 
 <style scoped>
+.big-font {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.nav-logo {
+  padding: 6px;
+  margin-left: 2px;
+}
 
 </style>

@@ -28,6 +28,13 @@ export default new Router({
       component: () => import('./views/Register.vue')
     },
     {
+      path: '/profile',
+      name: 'Profile',
+      meta: { layout: 'main' },
+      props: { website: 'http://localhost:8000/' },
+      component: () => import('./views/Profile.vue')
+    },
+    {
       path: '/catalog',
       name: 'Catalog',
       meta: { layout: 'main' },
@@ -40,6 +47,13 @@ export default new Router({
       props: { website: 'http://localhost:8000/' },
       meta: { layout: 'main' },
       component: () => import('./views/Product.vue')
+    },
+    {
+      path: '/additem',
+      name: 'AddItem',
+      props: { website: 'http://localhost:8000/' },
+      meta: { layout: 'main' },
+      component: () => import('./views/AddItem.vue')
     }
   ]
 })

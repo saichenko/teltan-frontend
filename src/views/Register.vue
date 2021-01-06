@@ -1,29 +1,30 @@
 <template>
   <div id="logreg-forms">
     <form @submit.prevent="handleSubmit" class="form-signup">
+      <h4 class="h3 mb-3 font-weight-normal" style="text-align: center"> Sign up</h4>
       <div class="social-login">
-        <button class="btn facebook-btn social-btn" type="button"><span><i class="fab fa-facebook-f"></i> Sign up with Facebook</span>
+        <button class="btn facebook-btn social-btn" style="width: 100%;" type="button"><span><i class="fab fa-facebook-f"></i> Sign up with Facebook</span>
         </button>
       </div>
       <div class="social-login">
-        <button class="btn google-btn social-btn" type="button"><span><i class="fab fa-google-plus-g"></i> Sign up with Google+</span>
+        <button class="btn google-btn social-btn" style="width: 100%;" type="button"><span><i class="fab fa-google-plus-g"></i> Sign up with Google+</span>
         </button>
       </div>
 
-      <p style="text-align:center">OR</p>
+      <h5 style="text-align:center">OR</h5>
 
       <input type="text" v-model="username" class="form-control" placeholder="Username" required autofocus="">
       <input type="text" v-model="first_name" class="form-control" placeholder="First name" autofocus="">
       <input type="text" v-model="last_name" class="form-control" placeholder="Last name" autofocus="">
       <input type="email" v-model="email" class="form-control" placeholder="Email" required autofocus="">
       <vue-tel-input v-model="phone" v-on:country-changed="countryChanged" v-bind="bindProps"
-                     style="height: 45px; margin-bottom: 2px;"></vue-tel-input>
+                     style="height: 45px; margin-bottom: 2px; text-decoration: none;"></vue-tel-input>
       <input type="password" v-model="password" class="form-control" placeholder="Password" required autofocus="">
       <input type="password" v-model="password2" class="form-control" placeholder="Repeat Password" required
              autofocus="">
 
-      <button class="btn btn-primary btn-block" type="submit"><i class="fas fa-user-plus"></i> Sign Up</button>
-      <a href="#" id="cancel_signup"><i class="fas fa-angle-left"></i>Back</a>
+      <button class="btn waves-effect btn-block waves-light" style="width: 100%;" type="submit"><i class="fas fa-sign-in-alt"></i> Sign up<a
+        href="#" id="cancel_signup"><i class="fas fa-angle-left"></i>Back</a></button>
     </form>
   </div>
 </template>
@@ -32,6 +33,7 @@
 import Vue from 'vue'
 import VueTelInput from 'vue-tel-input'
 import axios from "axios";
+import {mapActions} from 'vuex'
 
 Vue.use(VueTelInput)
 export default {
@@ -59,6 +61,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['login']),
     countryChanged(country) {
       this.country = country.dialCode
     },
@@ -85,15 +88,14 @@ export default {
           phone_num: this.phone
         }
       })
-
-      localStorage.setItem('token', response.data.token)
+      this.login(response.data.user, response.data.token)
+      this.$router.push('/');
     }
   }
 }
 </script>
 
 <style scoped>
-@import 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css';
 @import 'https://use.fontawesome.com/releases/v5.3.1/css/all.css';
 
 #logreg-forms {
@@ -221,6 +223,5 @@ export default {
   #logreg-forms .google-btn:after {
     content: 'Google+';
   }
-
 }
 </style>

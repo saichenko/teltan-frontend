@@ -5,20 +5,21 @@
         <div class="profile__row">
 
           <div class="profile__column user-profile">
-            <div class="user-profile__name">{{product.user.username}}</div>
+            <div class="user-profile__name">{{ product.user.username }}</div>
             <div class="user-profile__image"><img :src="product.user.profile.picture" alt="user photo"></div>
             <a href="#" class="user-profile__button btn"><span>Message</span></a>
           </div>
 
           <div class="profile__column user-content">
-            <div v-if="redemption" class="user-content__title" align="center"><h1><b>Drawing</b></h1></div>
-            <div v-else class="user-content__title" align="center"><h1><b>Advertisement</b></h1></div>
+            <div v-if="redemption" class="user-content__title" align="center"><h4><b>Drawing</b></h4></div>
+            <div v-else class="user-content__title" align="center"><h4><b>Advertisement</b></h4></div>
             <hr>
             <div class="user-content__title">{{ product.name }}</div>
             <div class="user-content__score"><p>{{ product.price }} &#8362;</p></div>
             <div class="user-content__galerey">
+
               <div v-for="productImage in productImages" v-bind:key="productImage.id" class="user-content__image">
-                <img :src="productImage.image">
+                <img class="materialboxed" :src="productImage.image">
               </div>
             </div>
             <div class="user-content__text">{{ product.description }}</div>
@@ -199,7 +200,7 @@ Vue.use(VueAxios, axios)
 export default {
   name: 'Profile',
   props: ['website'],
-  data () {
+  data() {
     return {
       product: undefined,
       productImages: undefined,
@@ -207,7 +208,12 @@ export default {
       redemption: undefined,
     }
   },
-  mounted () {
+  mounted() {
+    document.addEventListener('DOMContentLoaded', function() {
+      var elems = document.querySelectorAll('.materialboxed');
+      var instances = M.Materialbox.init(elems, options);
+    });
+
     console.log(this.website + 'api/product/' + this.$route.params.id)
     Vue.axios.get(this.website + 'api/product/' + this.$route.params.id)
       .then((resp) => {
@@ -222,7 +228,7 @@ export default {
       .then((resp) => {
         this.redemption = resp.data
       })
-  }
+  },
 }
 </script>
 
