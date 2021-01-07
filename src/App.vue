@@ -8,7 +8,7 @@
 
 <script>
 import MainLayout from './layouts/MainLayout'
-import {mapActions, mapGetters} from 'vuex'
+import {mapActions} from 'vuex'
 
 export default {
   name: 'App',

@@ -90,7 +90,8 @@ export default {
         username: this.username,
         password: this.password
       })
-      this.login(response.data.user, response.data.token)
+      console.log(response.data.token)
+      this.login({user: response.data.user, token: response.data.token})
       this.$router.push('/');
     }
   }

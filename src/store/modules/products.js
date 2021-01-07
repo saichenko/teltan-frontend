@@ -7,7 +7,7 @@ Vue.use(VueAxios, axios)
 export default {
   actions: {
     async fetchProducts (ctx) {
-      Vue.axios.get('api/product/')
+      await Vue.axios.get('api/product/')
         .then((resp) => {
           console.log(resp)
           ctx.commit('updateProducts', resp.data.results)

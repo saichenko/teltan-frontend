@@ -38,7 +38,7 @@
                   </div>
                   <img :src="product.main_image">
                 </div>
-                <div class="item-main__text"><p class="flow-text">{{ product.description }}</p></div>
+                <div class="item-main__text"><p class="flow-text">{{ product.name }}</p></div>
               </div>
               <div class="item-main__control">
                 <div class="item-main__percent">84% time left</div>
@@ -206,7 +206,7 @@
 import VueSlickCarousel from 'vue-slick-carousel'
 import 'vue-slick-carousel/dist/vue-slick-carousel.css'
 import 'vue-slick-carousel/dist/vue-slick-carousel-theme.css'
-import {mapGetters} from 'vuex'
+import {mapGetters, mapActions} from 'vuex'
 
 export default {
   name: 'Home',
@@ -230,6 +230,12 @@ export default {
         'autoplay': true,
       }
     }
+  },
+  methods: {
+    ...mapActions(['fetchProducts'])
+  },
+  async mounted() {
+    await this.fetchProducts()
   }
 }
 </script>

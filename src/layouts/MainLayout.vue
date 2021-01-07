@@ -3,8 +3,12 @@
     <nav>
       <div class="nav-wrapper teal lighten-3">
         <ul id="dropdown1" class="dropdown-content">
-          <li><router-link to="/profile">My Profile</router-link></li>
-          <li><router-link to="/additem">Publish an ad</router-link></li>
+          <li>
+            <router-link to="/profile">My Profile</router-link>
+          </li>
+          <li>
+            <router-link to="/additem">Publish an ad</router-link>
+          </li>
           <li><a href="#!">History</a></li>
           <li class="divider"></li>
           <li><a v-on:click="logout">Logout</a></li>
@@ -35,11 +39,14 @@
             </router-link>
           </li>
           <li>
-            <router-link to="/messages"><i class="material-icons"
-                                           style="font-size: 35px; vertical-align:middle;">email</i>
+            <router-link to="/cart"><i class="material-icons"
+                                           style="font-size: 35px; vertical-align:middle;">shopping_cart</i>
             </router-link>
           </li>
-          <li><a class="dropdown-trigger" ref="dropdown1" data-target="dropdown1"><p class="big-font">{{getUser.username }}&nbsp<img class="circle responsive-img" :src="'http://localhost:8000' + getUser.profile.picture" width="40"></p></a></li>
+          <li><a class="dropdown-trigger" ref="dropdown1" data-target="dropdown1"><p class="big-font">
+            {{ getUser.username }}&nbsp<img class="circle responsive-img"
+                                            :src="'http://localhost:8000' + getUser.profile.picture" width="40"></p></a>
+          </li>
         </ul>
         <ul v-else class="right hide-on-med-and-down">
           <li>
@@ -126,7 +133,7 @@ export default {
   methods: {
     ...mapActions(['logout'])
   },
-  mounted () {
+  mounted() {
     M.Dropdown.init(this.$refs.dropdown1, {
       coverTrigger: false,
     })

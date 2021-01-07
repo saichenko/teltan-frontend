@@ -1,6 +1,7 @@
 export default {
   actions: {
-    login (ctx, user, token){
+    login (ctx, {user, token}){
+      console.warn(token)
       localStorage.setItem('token', token)
       localStorage.setItem('user', JSON.stringify(user));
 
@@ -14,8 +15,8 @@ export default {
     }
   },
   state: {
-    token: localStorage.getItem('token') || undefined,
-    user: JSON.parse(localStorage.getItem('user')) || undefined
+    token: localStorage.getItem('token'),
+    user: JSON.parse(localStorage.getItem('user'))
   },
   mutations: {
     loginUser (state, user) {
