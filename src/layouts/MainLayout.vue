@@ -4,7 +4,7 @@
       <div class="nav-wrapper teal lighten-3">
         <ul id="dropdown1" class="dropdown-content">
           <li><router-link to="/profile">My Profile</router-link></li>
-          <li><router-link to="/additem">Place an ad</router-link></li>
+          <li><router-link to="/additem">Publish an ad</router-link></li>
           <li><a href="#!">History</a></li>
           <li class="divider"></li>
           <li><a v-on:click="logout">Logout</a></li>
@@ -26,7 +26,7 @@
             <router-link to="/contact" class="big-font">Contact</router-link>
           </li>
           <li v-if="getUser">
-            <router-link to="/additem" class="big-font">Place an ad</router-link>
+            <router-link to="/additem" class="big-font">Publish an ad</router-link>
           </li>
         </ul>
         <ul class="right hide-on-med-and-down" v-if="getUser">

@@ -1,41 +1,170 @@
 <template>
-  <div id="logreg-forms">
-    <form @submit.prevent="handleSubmit" class="form-signup">
-      <h4 class="h3 mb-3 font-weight-normal" style="text-align: center"> Sign up</h4>
-      <div class="social-login">
-        <button class="btn facebook-btn social-btn" style="width: 100%;" type="button"><span><i class="fab fa-facebook-f"></i> Sign up with Facebook</span>
-        </button>
+  <div id="login-page" class="row">
+    <div class="col s12 z-depth-6 card-panel">
+      <div class="row">
+        <div class="col">
+          <h4 style="margin-left: 125px"><b>Create Account</b></h4>
+        </div>
       </div>
-      <div class="social-login">
-        <button class="btn google-btn social-btn" style="width: 100%;" type="button"><span><i class="fab fa-google-plus-g"></i> Sign up with Google+</span>
-        </button>
-      </div>
-
-      <h5 style="text-align:center">OR</h5>
-
-      <input type="text" v-model="username" class="form-control" placeholder="Username" required autofocus="">
-      <input type="text" v-model="first_name" class="form-control" placeholder="First name" autofocus="">
-      <input type="text" v-model="last_name" class="form-control" placeholder="Last name" autofocus="">
-      <input type="email" v-model="email" class="form-control" placeholder="Email" required autofocus="">
-      <vue-tel-input v-model="phone" v-on:country-changed="countryChanged" v-bind="bindProps"
-                     style="height: 45px; margin-bottom: 2px; text-decoration: none;"></vue-tel-input>
-      <input type="password" v-model="password" class="form-control" placeholder="Password" required autofocus="">
-      <input type="password" v-model="password2" class="form-control" placeholder="Repeat Password" required
-             autofocus="">
-
-      <button class="btn waves-effect btn-block waves-light" style="width: 100%;" type="submit"><i class="fas fa-sign-in-alt"></i> Sign up<a
-        href="#" id="cancel_signup"><i class="fas fa-angle-left"></i>Back</a></button>
-    </form>
+      <form @submit.prevent="handleSubmit" class="login-form">
+        <div class="row">
+          <div class="input-field col s12">
+            <i class="material-icons prefix">person</i>
+            <input
+              class="validate"
+              id="username"
+              v-model.trim="username"
+              @blur='$v.username.$touch()'
+              type="text"
+              :class="{invalid: ($v.username.$dirty && !$v.username.required) || ($v.username.$dirty && !$v.username.maxLength)}"
+            >
+            <label for="username" data-error="wrong" data-success="right">Username*</label>
+            <small
+              class="helper-text invalid red-text"
+              v-if="$v.username.$dirty && !$v.username.required"
+            >Username field can not be empty</small>
+            <small
+              class="helper-text invalid red-text"
+              v-if="$v.username.$dirty && !$v.username.maxLength"
+            >Username field can not contain more than 150 characters</small>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="input-field col s6">
+              <input
+                class="validate"
+                id="first_name"
+                v-model="first_name"
+                @blur='$v.first_name.$touch()'
+                type="text"
+                :class="{invalid: $v.first_name.$dirty && !$v.first_name.alpha}"
+              >
+              <label for="first_name" data-error="wrong" data-success="right">First Name</label>
+              <small
+                class="helper-text invalid red-text"
+                v-if="$v.first_name.$dirty && !$v.first_name.alpha"
+              >This field accepts only alphabet characters.</small>
+            </div>
+            <div class="input-field col s6">
+              <input
+                class="validate"
+                id="last_name"
+                v-model="last_name"
+                @blur='$v.last_name.$touch()'
+                type="text"
+                :class="{invalid: $v.last_name.$dirty && !$v.last_name.alpha}"
+              >
+              <label for="last_name" data-error="wrong" data-success="right">Last Name</label>
+              <small
+                class="helper-text invalid red-text"
+                v-if="$v.last_name.$dirty && !$v.last_name.alpha"
+              >This field accepts only alphabet characters.</small>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s12">
+            <vue-tel-input
+              class="validate"
+              v-model.trim="phone"
+              v-on:country-changed="countryChanged"
+              v-bind="bindProps"
+              @blur='$v.phone.$touch()'
+              :class="{invalid: ($v.phone.$dirty && !$v.phone.required) || ($v.phone.$dirty && !$v.phone.numeric)}"
+            ></vue-tel-input>
+            <p
+              class="helper-text invalid red-text"
+              v-if="$v.phone.$dirty && !$v.phone.required"
+            >This field is required</p>
+            <small
+              class="helper-text invalid red-text"
+              v-if="$v.phone.$dirty && !$v.phone.numeric"
+            >This field can contain only numeric symbols</small>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s12">
+            <i class="material-icons prefix">email</i>
+            <input class="validate"
+                   id="email"
+                   v-model.trim="email"
+                   @blur='$v.email.$touch()'
+                   :class="{invalid: ($v.email.$dirty && !$v.email.required) || ($v.email.$dirty && !$v.email.email)}"
+                   type="text"
+            >
+            <label for="email" data-error="wrong" data-success="right">Email*</label>
+            <small
+              class="helper-text invalid red-text"
+              v-if="$v.email.$dirty && !$v.email.email"
+            >Email address is incorrect</small>
+            <small
+              class="helper-text invalid red-text"
+              v-else-if="$v.email.$dirty && !$v.email.required"
+            >Email field can not be empty</small>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s12">
+            <i class="material-icons prefix">lock_outline</i>
+            <input
+              id="password"
+              v-model.trim="password"
+              type="password"
+              @blur='$v.password.$touch()'
+              :class="{invalid: ($v.password.$dirty && !$v.password.required) || ($v.password.$dirty && !$v.password.minLength)}"
+            >
+            <label for="password">Password*</label>
+            <small
+              class="helper-text invalid red-text"
+              v-if="$v.password.$dirty && !$v.password.required"
+            >This field can not be empty</small>
+            <small
+              class="helper-text invalid red-text"
+              v-if="$v.password.$dirty && !$v.password.minLength"
+            >Password is too short</small>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s12">
+            <i class="material-icons prefix">lock_outline</i>
+            <input
+              id="password2"
+              v-model="password2"
+              type="password"
+              @blur='$v.password2.$touch()'
+              :class="{invalid: ($v.password2.$dirty && !$v.password2.required) || ($v.password2.$dirty && !$v.password2.sameAsPassword)}"
+            >
+            <label for="password2">Confirm Password*</label>
+            <small
+              class="helper-text invalid red-text"
+              v-if="$v.password2.$dirty && !$v.password2.required"
+            >This field is required</small>
+            <small
+              class="helper-text invalid red-text"
+              v-else-if="$v.password2.$dirty && !$v.password2.sameAsPassword"
+            >Passwords did not match. Try again.</small>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s12">
+            <button type="submit" href="#" class="btn waves-effect waves-light col s12">Create account</button>
+          </div>
+        </div>
+      </form>
+    </div>
   </div>
 </template>
 
 <script>
 import Vue from 'vue'
+import {mapActions} from 'vuex'
 import VueTelInput from 'vue-tel-input'
 import axios from "axios";
-import {mapActions} from 'vuex'
+import {required, email, alpha, numeric, sameAs, minLength, maxLength} from 'vuelidate/lib/validators'
 
 Vue.use(VueTelInput)
+
 export default {
   name: 'Register',
   props: ['website'],
@@ -53,12 +182,21 @@ export default {
 
       bindProps: {
         dynamicPlaceholder: true,
-        validCharactersOnly: true,
-        maxLen: 18,
+        maxLen: 17,
         disabledFetchingCountry: false,
         preferredCountries: ['IL', 'US', 'RU'],
       }
     }
+  },
+  validations: {
+    username: {required, maxLength: maxLength(150)},
+    first_name: {alpha},
+    last_name: {alpha},
+    phone: {required, numeric},
+    country: {required},
+    email: {email, required},
+    password: {required, minLength: minLength(9)},
+    password2: {required, sameAsPassword: sameAs('password')},
   },
   methods: {
     ...mapActions(['login']),
@@ -66,6 +204,10 @@ export default {
       this.country = country.dialCode
     },
     async handleSubmit() {
+      if (this.$v.$invalid) {
+        this.$v.$touch()
+        return
+      }
       console.log({
         username: this.username,
         first_name: this.first_name,
@@ -96,132 +238,25 @@ export default {
 </script>
 
 <style scoped>
-@import 'https://use.fontawesome.com/releases/v5.3.1/css/all.css';
-
-#logreg-forms {
-  width: 412px;
-  margin: 10vh auto;
-  background-color: #f3f3f3;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-  transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+html,
+body {
+  height: 100%;
 }
 
-#logreg-forms form {
-  width: 100%;
-  max-width: 410px;
-  padding: 15px;
+html {
+  display: table;
   margin: auto;
 }
 
-#logreg-forms .form-control {
-  position: relative;
-  box-sizing: border-box;
-  height: auto;
-  padding: 10px;
-  font-size: 16px;
+body {
+  display: table-cell;
+  vertical-align: middle;
+  background: #4ECDC4;
 }
 
-#logreg-forms .form-control:focus {
-  z-index: 2;
-}
-
-#logreg-forms .form-signin input[type="email"] {
-  margin-bottom: -1px;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
-}
-
-#logreg-forms .form-signin input[type="password"] {
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-}
-
-#logreg-forms .social-login {
-  width: 390px;
-  margin: 0 auto;
-  margin-bottom: 14px;
-}
-
-#logreg-forms .social-btn {
-  font-weight: 100;
-  color: white;
-  width: 190px;
-  font-size: 0.9rem;
-}
-
-#logreg-forms a {
-  display: block;
-  padding-top: 10px;
-  color: lightseagreen;
-}
-
-#logreg-form .lines {
-  width: 200px;
-  border: 1px solid red;
-}
-
-
-#logreg-forms button[type="submit"] {
-  margin-top: 10px;
-}
-
-#logreg-forms .facebook-btn {
-  background-color: #3C589C;
-}
-
-#logreg-forms .google-btn {
-  background-color: #DF4B3B;
-}
-
-#logreg-forms .form-signup .social-btn {
-  width: 210px;
-}
-
-#logreg-forms .form-signup input {
-  margin-bottom: 2px;
-}
-
-.form-signup .social-login {
-  width: 210px !important;
-  margin: 0 auto;
-}
-
-/* Mobile */
-
-@media screen and (max-width: 500px) {
-  #logreg-forms {
-    width: 300px;
-  }
-
-  #logreg-forms .social-login {
-    width: 200px;
-    margin: 0 auto;
-    margin-bottom: 10px;
-  }
-
-  #logreg-forms .social-btn {
-    font-size: 1.3rem;
-    font-weight: 100;
-    color: white;
-    width: 200px;
-    height: 56px;
-
-  }
-
-  #logreg-forms .social-btn:nth-child(1) {
-    margin-bottom: 5px;
-  }
-
-  #logreg-forms .social-btn span {
-    display: none;
-  }
-
-  #logreg-forms .facebook-btn:after {
-    content: 'Facebook';
-  }
-
-  #logreg-forms .google-btn:after {
-    content: 'Google+';
-  }
+#login-page {
+  margin-top: 70px;
+  margin-bottom: 130px;
+  width: 500px;
 }
 </style>

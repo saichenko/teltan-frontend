@@ -15,9 +15,10 @@ export default {
   components: {
     MainLayout
   },
-  methods: mapActions(['fetchProducts']),
+  methods: mapActions(['fetchProducts', 'fetchCategories']),
   async mounted() {
     await this.fetchProducts();
+    await this.fetchCategories();
   },
   computed: {
     layout() {

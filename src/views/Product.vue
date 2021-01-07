@@ -7,7 +7,7 @@
           <div class="profile__column user-profile">
             <div class="user-profile__name">{{ product.user.username }}</div>
             <div class="user-profile__image"><img :src="product.user.profile.picture" alt="user photo"></div>
-            <a href="#" class="user-profile__button btn"><span>Message</span></a>
+            <a href="#" class="btn center"><span>Contacts</span></a>
           </div>
 
           <div class="profile__column user-content">
