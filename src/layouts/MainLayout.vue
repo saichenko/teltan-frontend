@@ -40,12 +40,12 @@
           </li>
           <li>
             <router-link to="/cart"><i class="material-icons"
-                                           style="font-size: 35px; vertical-align:middle;">shopping_cart</i>
+                                       style="font-size: 35px; vertical-align:middle;">shopping_cart</i>
             </router-link>
           </li>
-          <li><a class="dropdown-trigger" ref="dropdown1" data-target="dropdown1"><p class="big-font">
+          <li><a class="dropdown-trigger big-font" ref="dropdown1" data-target="dropdown1">
             {{ getUser.username }}&nbsp<img class="circle responsive-img"
-                                            :src="'http://localhost:8000' + getUser.profile.picture" width="40"></p></a>
+                                            :src="'http://localhost:8000' + getUser.profile.picture" width="40"></a>
           </li>
         </ul>
         <ul v-else class="right hide-on-med-and-down">
@@ -68,56 +68,28 @@
 
     <router-view/>
 
-    <!-- Site footer -->
-    <footer class="site-footer">
+    <footer class="page-footer grey darken-2">
       <div class="container">
         <div class="row">
-          <div class="col-sm-12 col-md-6">
-            <h6>About</h6>
-            <p class="text-justify">Scanfcode.com <i>CODE WANTS TO BE SIMPLE </i> is an initiative to help the upcoming
-              programmers with the code. Scanfcode focuses on providing the most efficient code or snippets as the code
-              wants to be simple. We will help programmers build up concepts in different programming languages that
-              include C, C++, Java, HTML, CSS, Bootstrap, JavaScript, PHP, Android, SQL and Algorithm.</p>
+          <div class="col l6 s12">
+            <h5 class="white-text">Footer Content</h5>
+            <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
           </div>
-          <div class="col-xs-6 col-md-3">
-            <h6>Categories</h6>
-            <ul class="footer-links">
-              <li><a href="http://scanfcode.com/category/c-language/">C</a></li>
-              <li><a href="http://scanfcode.com/category/front-end-development/">UI Design</a></li>
-              <li><a href="http://scanfcode.com/category/back-end-development/">PHP</a></li>
-              <li><a href="http://scanfcode.com/category/java-programming-language/">Java</a></li>
-              <li><a href="http://scanfcode.com/category/android/">Android</a></li>
-              <li><a href="http://scanfcode.com/category/templates/">Templates</a></li>
-            </ul>
-          </div>
-          <div class="col-xs-6 col-md-3">
-            <h6>Quick Links</h6>
-            <ul class="footer-links">
-              <li><a href="http://scanfcode.com/about/">About Us</a></li>
-              <li><a href="http://scanfcode.com/contact/">Contact Us</a></li>
-              <li><a href="http://scanfcode.com/contribute-at-scanfcode/">Contribute</a></li>
-              <li><a href="http://scanfcode.com/privacy-policy/">Privacy Policy</a></li>
-              <li><a href="http://scanfcode.com/sitemap/">Sitemap</a></li>
+          <div class="col l4 offset-l2 s12">
+            <h5 class="white-text">Links</h5>
+            <ul>
+              <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
+              <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
+              <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
+              <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
             </ul>
           </div>
         </div>
-        <hr>
       </div>
-      <div class="container">
-        <div class="row">
-          <div class="col-md-8 col-sm-6 col-xs-12">
-            <p class="copyright-text">Copyright &copy; 2017 All Rights Reserved by
-              <a href="#">Scanfcode</a>.
-            </p>
-          </div>
-          <div class="col-md-4 col-sm-6 col-xs-12">
-            <ul class="social-icons">
-              <li><a class="facebook" href="#"><i class="fa fa-facebook"></i></a></li>
-              <li><a class="twitter" href="#"><i class="fa fa-twitter"></i></a></li>
-              <li><a class="dribbble" href="#"><i class="fa fa-dribbble"></i></a></li>
-              <li><a class="linkedin" href="#"><i class="fa fa-linkedin"></i></a></li>
-            </ul>
-          </div>
+      <div class="footer-copyright">
+        <div class="container">
+          © 2014 Copyright Text
+          <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
         </div>
       </div>
     </footer>
@@ -136,6 +108,7 @@ export default {
   mounted() {
     M.Dropdown.init(this.$refs.dropdown1, {
       coverTrigger: false,
+      constrainWidth: false
     })
   }
 }

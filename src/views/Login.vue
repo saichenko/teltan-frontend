@@ -86,6 +86,7 @@ export default {
         return
       }
 
+      delete axios.defaults.headers.common["Authorization"];
       const response = await axios.post(this.website + 'api-token-auth/', {
         username: this.username,
         password: this.password

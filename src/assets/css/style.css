@@ -567,15 +567,6 @@ body.lock {
     color: #737373;
 }
 
-.site-footer hr {
-    border-top-color: #bbb;
-    opacity: 0.5
-}
-
-.site-footer hr.small {
-    margin: 20px 0
-}
-
 .site-footer h6 {
     color: #fff;
     font-size: 16px;
@@ -1594,7 +1585,7 @@ textarea.form-popup__input {
     }
 
     .user-result__column-off {
-        max-width: 13%;
+        max-width: 63%;
         border-bottom: 2px solid rgba(140, 218, 166, 1);
         border-right: none;
     }
@@ -1610,9 +1601,9 @@ textarea.form-popup__input {
         text-decoration: none;
     }
 
-    .user-result__column-on {
-        max-width: 87%;
-    }
+    /*.user-result__column-on {*/
+    /*    max-width: 87%;*/
+    /*}*/
 
     .user-result__button {
         width: auto;

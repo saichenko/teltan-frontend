@@ -41,7 +41,7 @@
                 <div class="item-main__text"><p class="flow-text">{{ product.name }}</p></div>
               </div>
               <div class="item-main__control">
-                <div class="item-main__percent">84% time left</div>
+                <div class="item-main__percent">{{ product. redemption_percent}}%  Redeemed</div>
                 <p class="center-align">
                   <router-link :to="`/product/${product.id}`" class="waves-effect waves-light btn"><span>View</span>
                   </router-link>
@@ -240,5 +240,5 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped src="../assets/css/style.css">
 </style>

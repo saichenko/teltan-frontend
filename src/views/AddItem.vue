@@ -2,7 +2,7 @@
   <div class="container">
     <form @submit.prevent="handleSubmit">
       <div class="row">
-        <h2>Publish an ad</h2>
+        <h4>Publish an ad</h4>
         <div class="divider"></div>
         <br>
         <div class="row">
@@ -165,7 +165,6 @@
           <span>Draw</span>
         </label>
       </p>
-      <br>
       <p>
         <label>
           <input v-model="isDraw" v-bind:value="false" name="group1" type="radio" checked/>
@@ -174,7 +173,7 @@
       </p>
       <br>
       <br>
-      <button class="btn waves-effect waves-light" type="submit" name="action">Publish
+      <button class="btn waves-effect waves-light green" type="submit" name="action">Publish
         <i class="material-icons right">send</i>
       </button>
       <br>

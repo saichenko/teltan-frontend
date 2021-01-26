@@ -9,17 +9,16 @@
             <img :src="'http://localhost:8000' + getUser.profile.picture">
           </div>
           <div class="card-action">
-            <h5><b>{{getUser.first_name}} {{getUser.last_name}}</b></h5>
+            <h5><b>{{ getUser.first_name }} {{ getUser.last_name }}</b></h5>
             <a href="#">Profile settings</a>
           </div>
         </div>
         <div class="card blue-grey darken-1" style="width:300px">
           <div class="card-content white-text">
                     <span class="card-title">
-                        <b>Your balance 3123₪</b>
+                        <b>Your balance {{ getBalance }}₪</b>
                     </span>
-            <p>I am a very simple card. I am good at containing small bits of information.
-              I am convenient because I require little markup to use effectively.</p>
+            <p>You can spend this money on buying items and taking part in draws.</p>
           </div>
           <div class="card-action">
             <a href="#">Add money</a>
@@ -102,11 +101,17 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
+import {mapGetters, mapActions} from 'vuex'
 
 export default {
   name: "Profile",
-  computed: mapGetters(['getUser'])
+  computed: mapGetters(['getUser', 'getBalance']),
+  methods: {
+    ...mapActions(['fetchBalance'])
+  },
+  async mounted() {
+    await this.fetchBalance()
+  },
 }
 </script>
 

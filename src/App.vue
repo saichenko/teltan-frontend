@@ -29,7 +29,6 @@ export default {
 }
 </script>
 
-<style>
-@import './assets/css/style.css';
+<style scoped>
 @import 'https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css';
 </style>

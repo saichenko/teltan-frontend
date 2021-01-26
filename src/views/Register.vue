@@ -208,17 +208,7 @@ export default {
         this.$v.$touch()
         return
       }
-      console.log({
-        username: this.username,
-        first_name: this.first_name,
-        last_name: this.last_name,
-        email: this.email,
-        password: this.username,
-        profile: {
-          phone_num_code: this.country,
-          phone_num: this.phone
-        }
-      })
+      delete axios.defaults.headers.common["Authorization"];
       const response = await axios.post('api/user/', {
         username: this.username,
         first_name: this.first_name,
@@ -230,7 +220,7 @@ export default {
           phone_num: this.phone
         }
       })
-      this.login(response.data.user, response.data.token)
+      this.login({user: response.data.user, token: response.data.token})
       this.$router.push('/');
     }
   }
