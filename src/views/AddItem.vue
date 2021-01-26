@@ -145,18 +145,13 @@
         </div>
       </div>
       <div class="row">
-        <div class="file-field input-field col s6">
-          <blockquote>
-            <h6>You can add additional images of your product (optional).</h6>
-          </blockquote>
-          <div class="btn">
-            <span>File</span>
-            <input @change="selectAdditionalImages" type="file" multiple>
-          </div>
-          <div class="file-path-wrapper">
-            <input class="file-path validate" type="text" id="additional_images"
-                   placeholder="Upload one or more images">
-          </div>
+        <div class="col l6">
+          <uploader
+            v-model="additionalImages"
+            limit="8"
+            :autoUpload="false"
+            title="Upload images of your product"
+          ></uploader>
         </div>
       </div>
       <p>
@@ -188,9 +183,13 @@
 import {mapGetters, mapActions} from 'vuex'
 import {required, numeric, maxValue, maxLength} from 'vuelidate/lib/validators'
 import Vue from "vue";
+import Uploader from "vux-uploader-component";
 
 export default {
   name: "AddItem",
+  components: {
+    Uploader
+  },
   data() {
     return {
       productName: '',
@@ -200,7 +199,7 @@ export default {
       ageRestriction: '',
       category: '',
       mainImage: null,
-      additionalImages: null,
+      additionalImages: [],
       isDraw: null
     }
   },
@@ -232,9 +231,11 @@ export default {
     selectMainImage(event) {
       this.mainImage = event.target.files[0]
     },
+
     selectAdditionalImages(event) {
       this.additionalImages = event.target.files
     },
+
     async handleSubmit() {
       if (this.$v.$invalid) {
         this.$v.$touch()
@@ -259,9 +260,8 @@ export default {
         .then((res) => {
           const id = res.data.id
           for (let i = 0; i <= this.additionalImages.length; i++) {
-            var fd = new FormData()
             fd.append('product', id)
-            fd.append('image', this.additionalImages[i], this.additionalImages[i].name)
+            fd.append('image', this.additionalImages[i].blob)
             Vue.axios.post('api/product-image/', fd)
           }
         })

@@ -13,8 +13,8 @@
       <div class="col l8 m12 s12">
         <hr>
         <div class="row">
-          <div class="col l12">
-            <div>
+          <div class="col l12 m12 s12">
+            <div class="fill">
               <img :src="product.main_image" style="max-width: 630px; max-height: 630px">
             </div>
           </div>
@@ -54,7 +54,7 @@
               <img :src="product.user.profile.picture" class="circle responsive-img" width="210">
             </div>
             <div class="center">
-              <p class="flow-text">{{product.user.username}}</p>
+              <p class="flow-text">{{ product.user.username }}</p>
               <button class="btn waves-effect waves-light btn-" type="submit" name="action">
                 CONTACT USER
               </button>
@@ -103,7 +103,7 @@ export default {
     }
   },
   created() {
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
       var elems = document.querySelectorAll('.modal');
       var instances = M.Modal.init(elems, options);
     });
@@ -140,8 +140,9 @@ export default {
           }
         });
       });
+    }
   }
-}}
+}
 </script>
 
 <style scoped>
@@ -149,10 +150,17 @@ export default {
   box-sizing: content-box;
 }
 
-img {
-  max-width: 100%;
-  height: auto;
-  width: auto \9; /* ie8 */
+.fill {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden
+}
+
+.fill img {
+  flex-shrink: 0;
+  min-width: 100%;
+  min-height: 100%
 }
 
 /*div {*/
