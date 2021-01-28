@@ -1,7 +1,8 @@
 <template>
   <div class="container">
-    <br>
-    <br>
+    <p class="flow-text teal-text">
+      <router-link to="/">Home</router-link>
+      <i class="material-icons" style="vertical-align: -4px;">keyboard_arrow_right</i> My Profile</p>
     <div class="row">
       <div class="col s12 m4 l6 xl5">
         <div class="card" style="width:300px">
@@ -28,72 +29,27 @@
       </div>
       <div class="col s12 m12 l12 xl6">
         <div class="row">
-          <h4 class="center"><b>Last Spendings</b></h4>
-          <table class="highlight center">
-            <thead>
-            <tr>
-              <th>Date</th>
-              <th>Product</th>
-              <th>Price</th>
-            </tr>
-            </thead>
-
-            <tbody>
-            <tr>
-              <td>Alvin</td>
-              <td>Eclair</td>
-              <td>$0.87</td>
-            </tr>
-            <tr>
-              <td>Alan</td>
-              <td>Jellybean</td>
-              <td>$3.76</td>
-            </tr>
-            <tr>
-              <td>Jonathan</td>
-              <td>Lollipop</td>
-              <td>$7.00</td>
-            </tr>
-            </tbody>
-          </table>
-          <a href="#" class="right">View whole history</a>
-        </div>
-        <div class="row">
-          <h4 class="center"><b>Participating Now</b></h4>
-          <ul class="collection">
-            <li class="collection-item avatar">
-              <img src="images/yuna.jpg" alt="" class="circle">
-              <span class="title">Title</span>
-              <p>First Line <br>
-                Second Line
-              </p>
-              <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
-            </li>
-            <li class="collection-item avatar">
-              <i class="material-icons circle">folder</i>
-              <span class="title">Title</span>
-              <p>First Line <br>
-                Second Line
-              </p>
-              <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
-            </li>
-            <li class="collection-item avatar">
-              <i class="material-icons circle green">insert_chart</i>
-              <span class="title">Title</span>
-              <p>First Line <br>
-                Second Line
-              </p>
-              <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
-            </li>
-            <li class="collection-item avatar">
-              <i class="material-icons circle red">play_arrow</i>
-              <span class="title">Title</span>
-              <p>First Line <br>
-                Second Line
-              </p>
-              <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
-            </li>
-          </ul>
+          <div class="col s12 l12">
+            <ul class="tabs">
+              <li class="tab col s4"><a class="active" href="#test1">My Posts</a></li>
+              <li class="tab col s4"><a href="#test2">Participating Now</a></li>
+              <li class="tab col s4"><a href="#test3">Hello</a></li>
+            </ul>
+          </div>
+          <div class="row" id="test1">
+            <ul class="collection" v-if="userPosts">
+              <li class="collection-item avatar" v-for="product in userPosts">
+                <img :src="product.main_image" class="circle">
+                <span class="title"><router-link :to="`/product/${product.id}`"><b>{{ product.name }}</b></router-link> <i class="green-text">• {{ product.price }}</i></span>
+                <p v-if="product.is_draw">Redeemed {{product.redemption_percent}}%</p>
+                <p v-else>Advertisment</p>
+              </li>
+            </ul>
+            <p class="flow-text" v-else>You have not created any posts yet</p>
+          </div>
+          <div class="row" id="test2"></div>
+          <div class="row" id="test3"></div>
+          <p>{{userPosts}}</p>
         </div>
       </div>
     </div>
@@ -102,19 +58,60 @@
 
 <script>
 import {mapGetters, mapActions} from 'vuex'
+import Vue from "vue";
 
 export default {
   name: "Profile",
+  data() {
+    return {
+      userPosts: undefined
+    }
+  },
   computed: mapGetters(['getUser', 'getBalance']),
   methods: {
     ...mapActions(['fetchBalance'])
   },
   async mounted() {
+    Vue.axios.get('api/product/?user=' + this.getUser.id)
+      .then((resp) => {
+        this.userPosts = resp.data.results
+      })
+
+    $(document).ready(function () {
+      $('.tabs').tabs({swipeable: true});
+    });
+
     await this.fetchBalance()
   },
 }
 </script>
 
 <style scoped>
+/*div {*/
+/*  border: 1px solid #000000;*/
+/*}*/
+.tabs .tab a {
+  color: teal;
+}
 
+.tabs .tab a:focus, .tabs .tab a:focus.active {
+  background-color: #e2f6f6;
+  outline: none;
+}
+
+.tabs .tab a:hover, tabs .tab a:active, .tabs .tab a.active {
+  background-color: transparent;
+  color: #008080;
+}
+
+.tabs .tab.disabled a, .tabs .tab.disabled a:hover {
+  color: rgba(102, 147, 153, 0.7);
+}
+
+.tabs .indicator {
+  background-color: teal;
+}
+/*i {*/
+/*  vertical-align: -4px;*/
+/*}*/
 </style>

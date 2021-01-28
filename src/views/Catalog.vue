@@ -4,16 +4,8 @@
       <h2 class="catalog__title">Catalog</h2>
 
       <nav class="catalog__menu">
-          <VueSlickCarousel v-bind="settings">
-            <div v-for="category in categories" v-bind:key="category.id" class="show">
-              <a href="section.html" class="catalog__link">
-                <img :src="category.icon">
-                <span>{{category.name}}</span>
-              </a>
-            </div>
-          </VueSlickCarousel>
-      </nav>
 
+      </nav>
       <div class="catalog__section section">
         <h3 class="section__title">Электроника</h3>
         <table class="section__table table-section">
@@ -32,9 +24,6 @@
 
 <script>
 import Vue from 'vue'
-import VueSlickCarousel from 'vue-slick-carousel'
-import 'vue-slick-carousel/dist/vue-slick-carousel.css'
-import 'vue-slick-carousel/dist/vue-slick-carousel-theme.css'
 import {mapGetters} from 'vuex'
 
 
@@ -42,7 +31,6 @@ export default {
   name: 'Catalog',
   props: ['website'],
   components: {
-    VueSlickCarousel
   },
   computed: mapGetters(['allProducts']),
   data () {

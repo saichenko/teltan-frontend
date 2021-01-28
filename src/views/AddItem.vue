@@ -148,7 +148,7 @@
         <div class="col l6">
           <uploader
             v-model="additionalImages"
-            limit="8"
+            limit="10"
             :autoUpload="false"
             title="Upload images of your product"
           ></uploader>
@@ -260,6 +260,7 @@ export default {
         .then((res) => {
           const id = res.data.id
           for (let i = 0; i <= this.additionalImages.length; i++) {
+            var fd = new FormData()
             fd.append('product', id)
             fd.append('image', this.additionalImages[i].blob)
             Vue.axios.post('api/product-image/', fd)

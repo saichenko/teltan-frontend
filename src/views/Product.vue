@@ -1,9 +1,15 @@
 <template>
   <div class="container">
+    <div>
+      <p class="flow-text teal-text">
+        <router-link to="/">Home</router-link>
+        <i class="material-icons">keyboard_arrow_right</i> Product
+      </p>
+    </div>
     <div class="row">
       <div class="row">
         <div class="col l12">
-          <h4> {{ product.name }} <i class="green-text">• {{ product.price }}₪</i></h4>
+          <h4> {{ product.name }}<i class="green-text">• {{ product.price }}₪</i></h4>
           <small style="font-size: 22px"><i
             class="material-icons prefix">remove_red_eye</i> {{ product.viewed }} &nbsp&nbsp&nbsp<i
             class="material-icons prefix">date_range
@@ -15,7 +21,7 @@
         <div class="row">
           <div class="col l12 m12 s12">
             <div class="fill">
-              <img :src="product.main_image" style="max-width: 630px; max-height: 630px">
+              <lingallery :iid.sync="currentId" :items="items" :width="730" :height="430"/>
             </div>
           </div>
         </div>
@@ -83,6 +89,7 @@ import Vue from 'vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import moment from 'moment'
+import Lingallery from 'lingallery';
 
 Vue.filter('formatDate', function (value) {
   if (value) {
@@ -94,12 +101,24 @@ Vue.use(VueAxios, axios)
 export default {
   name: 'Profile',
   props: ['website'],
+  components: {
+    Lingallery
+  },
   data() {
     return {
       product: undefined,
       productImages: undefined,
       user: undefined,
       redemption: undefined,
+      items: [{
+        src: 'https://picsum.photos/600/400/?image=0',
+        thumbnail: 'https://picsum.photos/64/64/?image=0',
+      },
+      {
+        src: 'https://picsum.photos/600/400/?image=10',
+        thumbnail: 'https://picsum.photos/64/64/?image=10'
+      }],
+      currentId: null
     }
   },
   created() {
@@ -115,7 +134,17 @@ export default {
       })
     Vue.axios.get(this.website + 'api/product-image/?product=' + this.$route.params.id)
       .then((resp) => {
-        this.productImages = resp.data.results
+        console.log(resp.data.results)
+        const objects = resp.data.results
+        console.warn(objects)
+        for (let i = 0; i <= objects.length; i++) {
+          console.warn(objects[i].image)
+          this.items.push({
+            src: objects[i].image,
+            thumbnail: objects[i].image
+          })
+        }
+        this.banners = resp.data.results
       })
   },
   computed: {
@@ -123,25 +152,7 @@ export default {
       return Vue.filter('date')(this.value)
     }
   },
-  methods: {
-    testClick: function () {
-      console.log('Testklick-Call');
-      $('#modal1').modal('open');
-    },
-    init() {
-      $(document).ready(() => {
-        let elem = document.querySelector(`#modal1`);
-        this.instance = M.Modal.init(elem, {
-          onOpenStart: () => {
-            this.show();
-          },
-          onCloseEnd: () => {
-            this.resetForm();
-          }
-        });
-      });
-    }
-  }
+  methods: {}
 }
 </script>
 
@@ -170,5 +181,4 @@ export default {
 i {
   vertical-align: -4px;
 }
-
 </style>

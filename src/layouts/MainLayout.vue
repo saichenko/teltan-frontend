@@ -44,7 +44,7 @@
             </router-link>
           </li>
           <li><a class="dropdown-trigger big-font" ref="dropdown1" data-target="dropdown1">
-            {{ getUser.username }}&nbsp<img class="circle responsive-img"
+            {{ getUser.username }}&nbsp<img class="circle responsive-img" style=""
                                             :src="'http://localhost:8000' + getUser.profile.picture" width="40"></a>
           </li>
         </ul>

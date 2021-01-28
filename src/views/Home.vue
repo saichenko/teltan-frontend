@@ -7,14 +7,7 @@
           <div class="info-banner__time"><img src="@/assets/images/icons/clock.svg"> time left</div>
         </div>
         <div class="banner__image">
-          <VueSlickCarousel v-bind="settings">
-            <div v-for="product in sortedProducts" v-key:="product.id" class="banner__slider">
-              <div class="banner__slide">
-                <!--                <img :src="product.main_image" width="15%">-->
-                <img :src="product.main_image" width="25%">
-              </div>
-            </div>
-          </VueSlickCarousel>
+
           <a href="#noMoney" class="banner__button btn pl"><span>Become a sponsor</span></a>
         </div>
       </div>
@@ -203,16 +196,12 @@
 </template>
 
 <script>
-import VueSlickCarousel from 'vue-slick-carousel'
-import 'vue-slick-carousel/dist/vue-slick-carousel.css'
-import 'vue-slick-carousel/dist/vue-slick-carousel-theme.css'
 import {mapGetters, mapActions} from 'vuex'
 
 export default {
   name: 'Home',
   props: ['website'],
   components: {
-    VueSlickCarousel,
   },
   computed: mapGetters(['allProducts']),
   data() {
