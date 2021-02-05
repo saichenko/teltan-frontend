@@ -6,6 +6,11 @@
         <i class="material-icons">keyboard_arrow_right</i> Product
       </p>
     </div>
+
+    <modal name="buy-ticket-modal">
+      <BuyTicket v-bind:ticket_price="product.ticket_price"/>
+    </modal>
+
     <div class="row">
       <div class="row">
         <div class="col l12">
@@ -21,7 +26,7 @@
         <div class="row">
           <div class="col l12 m12 s12">
             <div class="fill">
-              <lingallery :iid.sync="currentId" :items="items" :width="730" :height="430"/>
+              <lingallery :iid.sync="currentId" :items="items" :width="610" :height="110"/>
             </div>
           </div>
         </div>
@@ -42,7 +47,7 @@
           </div>
           <div class="row">
             <div class="col l4 m6 s6 center offset-m3 offset-l4 offset-s3">
-              <button class="waves-effect btn green z-depth-1">Become a sponsor</button>
+              <button v-on:click="showModal = !showModal" class="waves-effect btn green z-depth-1">Become a sponsor</button>
             </div>
           </div>
         </div>
@@ -90,6 +95,7 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import moment from 'moment'
 import Lingallery from 'lingallery';
+import BuyTicket from "../components/BuyTicket";
 
 Vue.filter('formatDate', function (value) {
   if (value) {
@@ -100,9 +106,10 @@ Vue.use(VueAxios, axios)
 
 export default {
   name: 'Profile',
-  props: ['website'],
+  props: ['website', 'showModalProp'],
   components: {
-    Lingallery
+    Lingallery,
+    BuyTicket
   },
   data() {
     return {
@@ -110,15 +117,9 @@ export default {
       productImages: undefined,
       user: undefined,
       redemption: undefined,
-      items: [{
-        src: 'https://picsum.photos/600/400/?image=0',
-        thumbnail: 'https://picsum.photos/64/64/?image=0',
-      },
-      {
-        src: 'https://picsum.photos/600/400/?image=10',
-        thumbnail: 'https://picsum.photos/64/64/?image=10'
-      }],
-      currentId: null
+      items: [],
+      currentId: null,
+      showModal: this.showModalProp || false
     }
   },
   created() {
@@ -127,18 +128,18 @@ export default {
       var instances = M.Modal.init(elems, options);
     });
   },
-  mounted() {
-    Vue.axios.get(this.website + 'api/product/' + this.$route.params.id)
+  async mounted() {
+    console.warn(this.showModalProp)
+    this.showModal = true
+
+    await Vue.axios.get(this.website + 'api/product/' + this.$route.params.id)
       .then((resp) => {
         this.product = resp.data
       })
-    Vue.axios.get(this.website + 'api/product-image/?product=' + this.$route.params.id)
+    await Vue.axios.get(this.website + 'api/product-image/?product=' + this.$route.params.id)
       .then((resp) => {
-        console.log(resp.data.results)
         const objects = resp.data.results
-        console.warn(objects)
         for (let i = 0; i <= objects.length; i++) {
-          console.warn(objects[i].image)
           this.items.push({
             src: objects[i].image,
             thumbnail: objects[i].image
@@ -147,12 +148,19 @@ export default {
         this.banners = resp.data.results
       })
   },
+  watch: {
+    showModal: function () {
+      if (this.showModal) {
+        this.$modal.show('buy-ticket-modal');
+        this.showModal = false
+      }
+    }
+  },
   computed: {
     formatted() {
       return Vue.filter('date')(this.value)
     }
   },
-  methods: {}
 }
 </script>
 

@@ -2,7 +2,6 @@
 /*@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;500&display=swap');*/
 /*Обнуляющие стили*/
 * {
-    padding: 0px;
     margin: 0px;
     border: 0px;
 }
@@ -38,21 +37,9 @@ body {
     -webkit-text-size-adjust: 100%;
 }
 
-input, button, textarea {
-    font-family: 'Roboto', sans-serif;
-}
 
 input::-ms-clear {
     display: none;
-}
-
-button {
-    cursor: pointer;
-}
-
-button::-moz-focus-inner {
-    padding: 0;
-    border: 0;
 }
 
 a, a:visited {
@@ -319,29 +306,6 @@ body.lock {
 }
 
 /*Кнопка===========================================================================================*/
-.btn {
-    padding: 10px 20px;
-    background-color: #fff;
-    border: 1px solid #147535;
-    border-radius: 5px;
-    -webkit-transition: background-color 0.3s;
-    -o-transition: background-color 0.3s;
-    transition: background-color 0.3s;
-    text-align: center;
-}
-
-.btn span {
-    text-align: center;
-    font-weight: 600;
-}
-
-.btn-d {
-    background-color: #3FB467;
-}
-
-.btn-d span {
-    color: #fff;
-}
 
 /*Банер============================================================================================*/
 .banner {
@@ -411,12 +375,6 @@ body.lock {
     -o-object-fit: cover;
     object-fit: cover;
     vertical-align: middle;
-}
-
-.banner__button {
-    position: absolute;
-    left: 50px;
-    bottom: 20px;
 }
 
 /*Main content====================================================================================*/
@@ -546,16 +504,6 @@ body.lock {
     font-size: 16px;
     font-weight: 600;
     color: #147535;
-}
-
-.item-main__button {
-    margin: 0 10px 20px;
-    display: block;
-    text-align: center;
-}
-
-.item-main__button:last-child {
-    margin: 0 10px;
 }
 
 /*Footer ==========================================================================================*/
@@ -771,11 +719,6 @@ body.lock {
     background-color: #147535;
 }
 
-.user-profile__button {
-    display: block;
-    text-align: center;
-}
-
 .user-content {
     -webkit-box-flex: 0;
     -ms-flex: 0 0 calc(100% - 470px);
@@ -893,12 +836,6 @@ body.lock {
     flex: 0 0 87%;
     background-color: rgba(63, 180, 103, 0.7);
     border: 2px solid rgba(63, 180, 103, 1);
-}
-
-.user-result__button {
-    width: 100%;
-    display: block;
-    text-align: center;
 }
 
 /*Catalog===================================================================================*/
@@ -1187,20 +1124,6 @@ body.lock {
     margin: 0 -10px;
 }
 
-.declaration-popup__button {
-    -webkit-box-flex: 0;
-    -ms-flex: 0 0 130px;
-    flex: 0 0 130px;
-    max-width: 130px;
-    padding: 0 10px;
-    margin: 0 0 20px 0;
-}
-
-.declaration-popup__button .btn {
-    display: block;
-    text-align: center;
-}
-
 .agreement-popup {
     padding: 40px;
 }
@@ -1217,13 +1140,6 @@ body.lock {
     justify-content: space-between;
 }
 
-.agreement-popup__button {
-    margin-right: 20px;
-}
-
-.agreement-popup__button:last-child {
-    margin-right: 0;
-}
 
 .donate-popup {
     padding: 40px;
@@ -1256,13 +1172,6 @@ body.lock {
     height: 30px;
     border: 1px solid #147535;
     text-align: center;
-}
-
-.donate-popup__button {
-    display: block;
-    width: 90px;
-    text-align: center;
-    margin: 0 auto;
 }
 
 .form-popup {
@@ -1317,12 +1226,6 @@ textarea.form-popup__input {
     background: url('../images/icons/file-icon.svg') right center no-repeat;
 }
 
-.form-popup__button {
-    display: block;
-    width: 200px;
-    margin: 0 auto;
-}
-
 .noMoney-popup {
     padding: 20px;
     min-width: 400px;
@@ -1341,20 +1244,6 @@ textarea.form-popup__input {
     display: -ms-flexbox;
     display: flex;
     margin: 0 -10px;
-}
-
-.noMoney-popup__button {
-    -webkit-box-flex: 0;
-    -ms-flex: 0 0 50%;
-    flex: 0 0 50%;
-    max-width: 50%;
-    padding: 0 10px;
-}
-
-.noMoney-popup__button .btn {
-    display: block;
-    width: 100%;
-    text-align: center;
 }
 
 .sponsorQuantity-popup {
@@ -1409,13 +1298,6 @@ textarea.form-popup__input {
     height: 30px;
 }
 
-.sponsorQuantity-popup__button {
-    display: block;
-    width: 150px;
-    margin: 0 auto;
-    text-align: center;
-}
-
 /*Медиа-запросы===================================================================================*/
 @media (max-width: 1182px) {
     .container {
@@ -1432,9 +1314,7 @@ textarea.form-popup__input {
         text-shadow: 0.5px 0.5px 1px #0c0c0c;
     }
 
-    .btn:hover {
-        background-color: rgba(140, 218, 166, 1);
-    }
+
 }
 
 /*==============================================================================================*/
@@ -1605,10 +1485,6 @@ textarea.form-popup__input {
     /*    max-width: 87%;*/
     /*}*/
 
-    .user-result__button {
-        width: auto;
-        display: inline-block;
-    }
 }
 
 /*==============================================================================================*/
@@ -1753,13 +1629,6 @@ textarea.form-popup__input {
         max-width: 100%;
     }
 
-    .banner__button {
-        left: 50%;
-        bottom: 10px;
-        -webkit-transform: translateX(-50%);
-        -ms-transform: translateX(-50%);
-        transform: translateX(-50%);
-    }
 
     .table-section__value {
         width: 100px;
@@ -1838,77 +1707,5 @@ textarea.form-popup__input {
 
     .table-section__user {
         width: 40px;
-    }
-
-    .donate-popup {
-        padding: 20px;
-    }
-
-    .donate-popup__input-block {
-        margin: 0 0 20px 0;
-        display: block;
-    }
-
-    .donate-popup__label {
-        margin: 0 0 10px 0;
-        padding: 0;
-        display: block;
-    }
-
-    .donate-popup__input {
-        display: block;
-        max-width: none;
-        width: 100%;
-    }
-
-    .form-popup {
-        margin-top: 140px;
-    }
-
-    .form-popup__input-block {
-        margin: 0 0 20px 0;
-        -ms-flex-wrap: wrap;
-        flex-wrap: wrap;
-    }
-
-    .form-popup__label {
-        -webkit-box-flex: 0;
-        -ms-flex: 0 0 100%;
-        flex: 0 0 100%;
-        max-width: 100%;
-        margin-bottom: 15px;
-        padding: 0;
-    }
-
-    .form-popup__input {
-        -webkit-box-flex: 0;
-        -ms-flex: 0 0 100%;
-        flex: 0 0 100%;
-        max-width: 100%;
-    }
-
-    .form-popup__label-file {
-        -webkit-box-flex: 1;
-        -ms-flex: 1 0 200px;
-        flex: 1 0 200px;
-        max-width: 200px;
-    }
-
-    .noMoney-popup {
-        padding: 20px 20px 0 20px;
-        min-width: 300px;
-    }
-
-    .noMoney-popup__control {
-        -ms-flex-wrap: wrap;
-        flex-wrap: wrap;
-        -webkit-box-pack: center;
-        -ms-flex-pack: center;
-        justify-content: center;
-    }
-
-    .noMoney-popup__button {
-        min-width: 200px;
-        margin-bottom: 20px;
     }
 }

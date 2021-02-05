@@ -2,7 +2,8 @@
   <div class="container">
     <p class="flow-text teal-text">
       <router-link to="/">Home</router-link>
-      <i class="material-icons" style="vertical-align: -4px;">keyboard_arrow_right</i> My Profile</p>
+      <i class="material-icons" style="vertical-align: -4px;">keyboard_arrow_right</i> My Profile
+    </p>
     <div class="row">
       <div class="col s12 m4 l6 xl5">
         <div class="card" style="width:300px">
@@ -32,7 +33,7 @@
           <div class="col s12 l12">
             <ul class="tabs">
               <li class="tab col s4"><a class="active" href="#test1">My Posts</a></li>
-              <li class="tab col s4"><a href="#test2">Participating Now</a></li>
+              <li class="tab col s4"><a href="#test2">Participating</a></li>
               <li class="tab col s4"><a href="#test3">Hello</a></li>
             </ul>
           </div>
@@ -40,16 +41,28 @@
             <ul class="collection" v-if="userPosts">
               <li class="collection-item avatar" v-for="product in userPosts">
                 <img :src="product.main_image" class="circle">
-                <span class="title"><router-link :to="`/product/${product.id}`"><b>{{ product.name }}</b></router-link> <i class="green-text">• {{ product.price }}</i></span>
-                <p v-if="product.is_draw">Redeemed {{product.redemption_percent}}%</p>
+                <span class="title"><router-link :to="`/product/${product.id}`"><b>{{ product.name }}</b></router-link> <i
+                  class="green-text">• {{ product.price }}</i></span>
+                <p v-if="product.is_draw">Redeemed {{ product.redemption_percent }}%</p>
                 <p v-else>Advertisment</p>
               </li>
             </ul>
             <p class="flow-text" v-else>You have not created any posts yet</p>
           </div>
-          <div class="row" id="test2"></div>
+
+          <div class="row" id="test2">
+            <ul class="collection" v-if="userPosts">
+              <li class="collection-item avatar" v-for="product in userPosts">
+                <img :src="product.main_image" class="circle">
+                <span class="title"><router-link :to="`/product/${product.id}`"><b>{{ product.name }}</b></router-link> <i
+                  class="green-text">• {{ product.price }}</i></span>
+                <p v-if="product.is_draw">Redeemed {{ product.redemption_percent }}%</p>
+                <p v-else>Advertisment</p>
+              </li>
+            </ul>
+          </div>
+
           <div class="row" id="test3"></div>
-          <p>{{userPosts}}</p>
         </div>
       </div>
     </div>
@@ -111,6 +124,7 @@ export default {
 .tabs .indicator {
   background-color: teal;
 }
+
 /*i {*/
 /*  vertical-align: -4px;*/
 /*}*/
