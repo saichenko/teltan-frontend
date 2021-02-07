@@ -1,17 +1,23 @@
 <template>
   <div class="container">
+    <v-dialog
+      :adaptive="true"
+      :width="400"
+      :height="400"
+    />
+
     <form @submit.prevent="handleSubmit">
       <div class="row">
-        <h4>Publish an ad</h4>
+        <h4>Update
+          <router-link :to="{name: 'Product', id:product.id}">product</router-link>
+        </h4>
         <div class="divider"></div>
         <br>
         <div class="row">
           <div class="input-field col s6">
             <select
-              v-model="category"
+              v-model="product.category"
               class="validate"
-              :class="{invalid: $v.category.$dirty && !$v.category.required}"
-              @blur='$v.category.$touch()'
             >
               <option value="" disabled selected>Choose product category</option>
               <option :value="category.id" v-for="category in allCategories" v-bind:key="category.id">{{
@@ -20,10 +26,6 @@
               </option>
             </select>
             <label>Category*</label>
-            <small
-              class="helper-text invalid red-text"
-              v-if="$v.category.$dirty && !$v.category.required"
-            >Please choose product category</small>
           </div>
         </div>
         <div class="row">
@@ -35,25 +37,21 @@
                 type="text"
                 class="validate"
                 data-length="80"
-                v-model="productName"
+                v-model="product.name"
                 @blur='$v.productName.$touch()'
-                :class="{invalid: ($v.productName.$dirty && !$v.productName.required) || ($v.productName.$dirty && !$v.productName.maxLength)}"
+                :class="{invalid: $v.productName.$dirty && !$v.productName.maxLength}"
               >
               <label for="name">Product name*</label>
               <small
                 class="helper-text invalid red-text"
-                v-if="$v.productName.$dirty && !$v.productName.required"
-              >This field is required</small>
-              <small
-                class="helper-text invalid red-text"
-                v-else-if="$v.productName.$dirty && !$v.productName.maxLength"
+                v-if="$v.productName.$dirty && !$v.productName.maxLength"
               >Product name can not contain more than 80 characters</small>
             </div>
           </div>
           <div class="col s12">
             <div class="input-field col s6">
               <i class="material-icons prefix">description</i>
-              <textarea v-model="description" id="description" class="materialize-textarea"></textarea>
+              <textarea v-model="product.description" id="description" class="materialize-textarea"></textarea>
               <label for="description">Description</label>
             </div>
           </div>
@@ -64,46 +62,35 @@
                 id="price"
                 type="number"
                 class="validate"
-                v-model.trim="price"
+                v-model.trim="product.price"
                 min="0"
                 @blur='$v.price.$touch()'
-                :class="{invalid: ($v.price.$dirty && !$v.price.required) || ($v.price.$dirty && !$v.price.maxValue)}"
+                :class="{invalid: $v.price.$dirty && !$v.price.maxValue}"
               >
-              <label for="price">Price*</label>
+              <label for="price" class="active">Price*</label>
               <small
                 class="helper-text invalid red-text"
-                v-if="$v.price.$dirty && !$v.price.required"
-              >This field is required</small>
-              <small
-                class="helper-text invalid red-text"
-                v-else-if="$v.price.$dirty && !$v.price.maxValue"
+                v-if="$v.price.$dirty && !$v.price.maxValue"
               >Price can not be more than 99999999 shekels</small>
             </div>
             <div class="input-field col s2">
               <i class="material-icons prefix">date_range</i>
               <input
-                v-model="year"
+                v-model="product.year"
                 min="0"
                 id="year"
                 type="number"
                 class="validate"
                 @blur='$v.year.$touch()'
-                :class="{invalid: $v.year.$dirty && !$v.year.required}"
               >
               <label for="year">Year</label>
-              <small
-                class="helper-text invalid red-text"
-                v-if="$v.year.$dirty && !$v.year.required"
-              >This field is required</small>
             </div>
           </div>
           <div class="col s12">
             <div class="input-field col s3">
               <select
-                v-model="ageRestriction"
+                v-model="product.age_restriction"
                 class="validate"
-                :class="{invalid: $v.ageRestriction.$dirty && !$v.ageRestriction.required}"
-                @blur='$v.ageRestriction.$touch()'
               >
                 <option value="" disabled selected>Choose product age restriction</option>
                 <option value="0">0+</option>
@@ -113,10 +100,6 @@
                 <option value="18">18+</option>
               </select>
               <label>Age restriction*</label>
-              <small
-                class="helper-text invalid red-text"
-                v-if="$v.ageRestriction.$dirty && !$v.ageRestriction.required"
-              >Please choose age restriction</small>
             </div>
           </div>
           <div class="col s12">
@@ -129,17 +112,11 @@
                 <input
                   type="file"
                   @change="selectMainImage"
-                  @blur='$v.mainImage.$touch()'
-                  :class="{invalid: $v.mainImage.$dirty && !$v.mainImage.required}"
                 >
               </div>
               <div class="file-path-wrapper">
                 <input class="file-path validate" type="text" placeholder="Upload image">
               </div>
-              <small
-                class="helper-text invalid red-text"
-                v-if="$v.mainImage.$dirty && !$v.mainImage.required"
-              >Please choose main image of your product</small>
             </div>
           </div>
         </div>
@@ -154,22 +131,21 @@
           ></uploader>
         </div>
       </div>
-      <p>
-        <label>
-          <input v-model="isDraw" v-bind:value="true" name="group1" type="radio"/>
-          <span>Draw</span>
-        </label>
-      </p>
-      <p>
-        <label>
-          <input v-model="isDraw" v-bind:value="false" name="group1" type="radio" checked/>
-          <span>Advertisement</span>
-        </label>
-      </p>
       <br>
       <br>
-      <button class="btn waves-effect waves-light green" type="submit" name="action">Publish
-        <i class="material-icons right">send</i>
+      <button type="button" v-on:click="deleteProduct" v-if="!product.is_draw" class="btn red"><i
+        class="material-icons right">delete</i>Delete
+      </button>
+      &nbsp
+      <button type="button" v-on:click="handleDeactivate" v-if="!product.is_draw && product.is_active" class="btn">
+        deactivate
+      </button>
+      <button type="button" v-on:click="handleActivate" v-else-if="!product.is_draw && !product.is_active" class="btn">
+        Activate
+      </button>
+      &nbsp
+      <button class="btn waves-effect waves-light green" type="submit" name="action">Update
+        <i class="material-icons right">cached</i>
       </button>
       <br>
       <br>
@@ -186,46 +162,55 @@ import Vue from "vue";
 import Uploader from "vux-uploader-component";
 
 export default {
-  name: "AddItem",
+  name: 'UpdateItem',
   components: {
     Uploader
   },
   data() {
     return {
-      productName: '',
-      description: '',
-      price: '',
-      year: '',
-      ageRestriction: '',
-      category: '',
+      product: null,
       mainImage: null,
+      category: null,
       additionalImages: [],
-      isDraw: null
+      fetchedImages: []
     }
   },
   validations: {
-    productName: {required, maxLength: maxLength(80)},
-    price: {required, numeric, maxValue: maxValue(99999999)},
-    category: {required},
-    ageRestriction: {required},
-    mainImage: {required},
-    year: {required}
+    productName: {maxLength: maxLength(80)},
+    price: {numeric, maxValue: maxValue(99999999)},
   },
   computed: mapGetters(['allCategories']),
 
   async mounted() {
-    await this.fetchProducts();
     await this.fetchCategories();
 
-    $(document).ready(function () {
-      $('select').formSelect();
-    });
+    await Vue.axios.get('api/product/' + this.$route.params.id)
+      .then((resp) => {
+        this.product = resp.data
+      })
 
-    $(document).ready(function () {
+    await Vue.axios.get('api/product-image/?product=' + this.$route.params.id)
+      .then(resp => {
+        const objects = resp.data.results
+        for (let i = 0; i < objects.length; i++) {
+          const obj = {url: objects[i].image, id: objects[i].id}
+          this.additionalImages.push(obj)
+          this.fetchedImages.push(obj)
+        }
+      })
+
+    await $(document).ready(function () {
+      $('select').formSelect();
+    })
+
+    await $(document).ready(function () {
       $('input#name').characterCounter();
+    })
+
+    await $(document).ready(function () {
+      M.updateTextFields();
     });
   },
-
   methods: {
     ...mapActions(['fetchProducts', 'fetchCategories']),
     selectMainImage(event) {
@@ -241,33 +226,73 @@ export default {
         this.$v.$touch()
         return
       }
-      const data = {
-        name: this.productName,
-        description: this.description,
-        price: this.price,
-        category: this.category,
-        year: this.year,
-        age_restriction: this.ageRestriction,
-        is_draw: this.isDraw
-      }
 
       var fd = new FormData()
-      for (var key in data) {
-        fd.append(key, data[key]);
+      delete this.product.main_image
+      for (var key in this.product) {
+        fd.append(key, this.product[key]);
       }
-      fd.append('main_image', this.mainImage, this.mainImage.name)
-      Vue.axios.post('api/product/', fd)
+
+      if (this.mainImage != null) {
+        fd.append('main_image', this.mainImage, this.mainImage.name)
+      }
+
+      await Vue.axios.patch(`api/product/${this.product.id}/`, fd)
         .then((res) => {
-          const id = res.data.id
+          const id = this.product.id
+
           for (let i = 0; i < this.additionalImages.length; i++) {
+            if (this.fetchedImages.some(e => e === this.additionalImages[i])) {
+              continue
+            }
             var fd = new FormData()
             fd.append('product', id)
             fd.append('image', this.additionalImages[i].blob)
             Vue.axios.post('api/product-image/', fd)
           }
-          this.$router.push(`product/${id}`);
+
+          for (let i = 0; i < this.fetchedImages.length; i++) {
+            if (!this.additionalImages.some(e => e === this.fetchedImages[i])) {
+              console.log(`api/product-image/${this.fetchedImages[i].id}/`)
+              Vue.axios.delete(`api/product-image/${this.fetchedImages[i].id}/`)
+            }
+          }
+
+          this.$router.back();
         })
       await this.fetchProducts()
+    },
+    async deleteProduct() {
+      await this.$modal.show('dialog', {
+        title: 'Are you sure to delete this product?',
+        text: 'This action completely deletes the product. If you want to hide this from other people you can deactivate this.',
+        buttons: [
+          {
+            title: 'CANCEL',
+            class: 'btn',
+            handler: () => {
+              this.$modal.hide('dialog')
+            }
+          },
+          {
+            title: 'Delete',
+            class: 'btn red darken-2',
+            handler: () => {
+              Vue.axios.delete(`api/product/${this.product.id}/`)
+              this.$router.push('/')
+              this.fetchProducts()
+            }
+          },
+        ]
+      })
+    },
+    async handleDeactivate() {
+      await Vue.axios.patch(`api/product/${this.product.id}/`, {is_active: false})
+      await this.$router.back()
+    },
+    async handleActivate() {
+      await Vue.axios.patch(`api/product/${this.product.id}/`, {is_active: true})
+      await this.$router.back()
     }
   }
 }

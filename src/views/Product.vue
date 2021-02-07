@@ -6,9 +6,22 @@
         <i class="material-icons">keyboard_arrow_right</i> Product
       </p>
     </div>
+    <modal name="buy-ticket-modal" :height="320" :adaptive="true">
+      <BuyTicket v-bind:product="product"/>
+    </modal>
 
-    <modal name="buy-ticket-modal">
-      <BuyTicket v-bind:ticket_price="product.ticket_price"/>
+    <modal name="show-contacts-modal">
+      <div class="row center">
+        <div class="col l12">
+          <h3 class="center">Contacts {{ product.user.username }}</h3>
+        </div>
+      </div>
+      <div class="row center">
+        <div class="col l12">
+          <h5 class="center"><b>Name: </b>{{ product.user.first_name }}</h5>
+          <h5 class="center"><b>Email: </b>{{ product.user.email }}</h5>
+        </div>
+      </div>
     </modal>
 
     <div class="row">
@@ -22,11 +35,11 @@
         </div>
       </div>
       <div class="col l8 m12 s12">
-        <hr>
-        <div class="row">
+        <div class="row" v-if="items.length !== 0">
+          <hr>
           <div class="col l12 m12 s12">
             <div class="fill">
-              <lingallery :iid.sync="currentId" :items="items" :width="610" :height="110"/>
+              <lingallery :iid.sync="currentId" :items="items" :width="610" :height="460"/>
             </div>
           </div>
         </div>
@@ -47,7 +60,8 @@
           </div>
           <div class="row">
             <div class="col l4 m6 s6 center offset-m3 offset-l4 offset-s3">
-              <button v-on:click="showModal = !showModal" class="waves-effect btn green z-depth-1">Become a sponsor</button>
+              <button v-on:click="showModal = !showModal" class="waves-effect btn green z-depth-1">Become a sponsor
+              </button>
             </div>
           </div>
         </div>
@@ -66,15 +80,25 @@
             </div>
             <div class="center">
               <p class="flow-text">{{ product.user.username }}</p>
-              <button class="btn waves-effect waves-light btn-" type="submit" name="action">
-                CONTACT USER
+              <button v-on:click="$modal.show('show-contacts-modal')" class="btn waves-effect waves-light btn-"
+                      type="submit" name="action">
+                SHOW CONTACTS
               </button>
+              <br>
+              <br>
+              <router-link
+                :to="`${product.id}/update`"
+                class="waves-effect waves-light btn"
+                v-if="product.user.id === getUser.id"
+              >EDIT PRODUCT
+              </router-link>
             </div>
           </div>
         </div>
         <hr>
         <div class="row">
           <div class="col l12 m12 s12 center">
+            <h4 class="red-text" v-if="!product.is_active">Not Active</h4>
             <h2 class="green-text" v-if="product.is_draw"><b>Draw</b></h2>
             <h4 class="green-text" v-else><b>Advertisement</b></h4>
             <ul style="font-size: 22px;">
@@ -96,6 +120,8 @@ import VueAxios from 'vue-axios'
 import moment from 'moment'
 import Lingallery from 'lingallery';
 import BuyTicket from "../components/BuyTicket";
+import {mapGetters} from 'vuex'
+
 
 Vue.filter('formatDate', function (value) {
   if (value) {
@@ -129,17 +155,16 @@ export default {
     });
   },
   async mounted() {
-    console.warn(this.showModalProp)
     this.showModal = true
 
-    await Vue.axios.get(this.website + 'api/product/' + this.$route.params.id)
+    await Vue.axios.get('api/product/' + this.$route.params.id)
       .then((resp) => {
         this.product = resp.data
       })
     await Vue.axios.get(this.website + 'api/product-image/?product=' + this.$route.params.id)
       .then((resp) => {
         const objects = resp.data.results
-        for (let i = 0; i <= objects.length; i++) {
+        for (let i = 0; i < objects.length; i++) {
           this.items.push({
             src: objects[i].image,
             thumbnail: objects[i].image
@@ -157,6 +182,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['getUser']),
     formatted() {
       return Vue.filter('date')(this.value)
     }

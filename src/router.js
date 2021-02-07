@@ -54,6 +54,13 @@ export default new Router({
       props: {website: 'http://localhost:8000/'},
       meta: {layout: 'main'},
       component: () => import('./views/AddItem.vue')
+    },
+    {
+      path: '/product/:id/update',
+      name: 'UpdateItem',
+      props: {website: 'http://localhost:8000/'},
+      meta: {layout: 'main'},
+      component: () => import('./views/UpdateItem')
     }
   ]
 })

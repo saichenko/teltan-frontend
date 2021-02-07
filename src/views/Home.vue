@@ -20,7 +20,8 @@
             <div class="item-main__wrap">
               <div class="item-main__content">
                 <div class="item-main__image">
-                  <div class="item-main__user"><img :src="product.user.profile.picture" :alt="product.user.username">
+                  <div class="item-main__user">
+                    <img :src="product.user.profile.picture" :alt="product.user.username">
                   </div>
                   <div class="item-main__rating">
                     <img src="@/assets/images/icons/star.svg">
@@ -30,29 +31,20 @@
                   </div>
                   <img :src="product.main_image">
                 </div>
-                <div class="item-main__text"><p class="flow-text">{{ product.name }}</p></div>
-                <p>efsesfes</p>
+                <router-link :to="`/product/${product.id}`" class="black-text">
+                  <div class="item-main__text"><p class="flow-text">{{ product.name }}</p></div>
+                </router-link>
               </div>
               <div class="item-main__control">
-                <div v-if="product.is_draw" class="item-main__percent">{{ product.redemption_percent }}% Redeemed</div>
+                <div v-if="product.is_draw" class="item-main__percent">Draw • {{ product.redemption_percent }}%
+                  Redeemed
+                </div>
+                <div v-else="product.is_draw" class="item-main__percent">Advertisment</div>
+
                 <hr>
                 <p class="center-align">
                   <router-link :to="`/product/${product.id}`" class="waves-effect waves-light btn"><span>View</span>
                   </router-link>
-                  <br>
-                  <br>
-                  <router-link
-                    v-if="product.is_draw"
-                    :to="{
-                      name: 'Product',
-                      id: product.id,
-                      params: {
-                        showModalProp: true,
-                      }
-                    }"
-                    class="waves-effect waves-light btn"
-                    append
-                  ><span>Become a sponsor</span></router-link>
                 </p>
               </div>
             </div>

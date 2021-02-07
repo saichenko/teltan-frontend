@@ -20,7 +20,7 @@
                     <span class="card-title">
                         <b>Your balance {{ getBalance }}₪</b>
                     </span>
-            <p>You can spend this money on buying items and taking part in draws.</p>
+            <p>You can spend this money on buying products and taking part in draws.</p>
           </div>
           <div class="card-action">
             <a href="#">Add money</a>
@@ -42,14 +42,13 @@
               <li class="collection-item avatar" v-for="product in userPosts">
                 <img :src="product.main_image" class="circle">
                 <span class="title"><router-link :to="`/product/${product.id}`"><b>{{ product.name }}</b></router-link> <i
-                  class="green-text">• {{ product.price }}</i></span>
+                  class="green-text">• {{ product.price }}</i><i v-if="!product.is_active" class="red-text"> • Not Active</i></span>
                 <p v-if="product.is_draw">Redeemed {{ product.redemption_percent }}%</p>
                 <p v-else>Advertisment</p>
               </li>
             </ul>
             <p class="flow-text" v-else>You have not created any posts yet</p>
           </div>
-
           <div class="row" id="test2">
             <ul class="collection" v-if="userPosts">
               <li class="collection-item avatar" v-for="product in userPosts">
@@ -61,7 +60,6 @@
               </li>
             </ul>
           </div>
-
           <div class="row" id="test3"></div>
         </div>
       </div>

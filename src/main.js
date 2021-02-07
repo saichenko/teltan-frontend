@@ -10,7 +10,7 @@ import './axios'
 
 Vue.config.productionTip = false
 Vue.use(Vuelidate)
-Vue.use(VModal)
+Vue.use(VModal, { dialog: true })
 
 new Vue({
   store,

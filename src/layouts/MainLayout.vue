@@ -35,17 +35,15 @@
         </ul>
         <ul class="right hide-on-med-and-down" v-if="getUser">
           <li>
-            <router-link to="/messages"><i class="material-icons" style="font-size: 35px; vertical-align:middle;">account_balance_wallet</i>
-            </router-link>
-          </li>
-          <li>
-            <router-link to="/cart"><i class="material-icons"
-                                       style="font-size: 35px; vertical-align:middle;">shopping_cart</i>
+            <router-link to="/messages" class="flow-text"><i class="material-icons right"
+                                                             style="font-size: 35px; vertical-align:middle;">account_balance_wallet</i>
+              {{ getBalance }}₪
             </router-link>
           </li>
           <li><a class="dropdown-trigger big-font" ref="dropdown1" data-target="dropdown1">
-            {{ getUser.username }}&nbsp<img class="circle responsive-img" style=""
-                                            :src="'http://localhost:8000' + getUser.profile.picture" width="40"></a>
+            {{ getUser.username }}<img class="circle responsive-img right" style=""
+                                       :src="'http://localhost:8000' + getUser.profile.picture" width="40">
+          </a>
           </li>
         </ul>
         <ul v-else class="right hide-on-med-and-down">
@@ -72,23 +70,31 @@
       <div class="container">
         <div class="row">
           <div class="col l6 s12">
-            <h5 class="white-text">Footer Content</h5>
+            <img src="@/assets/images/logo.png" :width="300">
             <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
           </div>
           <div class="col l4 offset-l2 s12">
             <h5 class="white-text">Links</h5>
             <ul>
-              <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
-              <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
-              <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
-              <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
+              <li>
+                <router-link to="/" class="grey-text text-lighten-3">Home</router-link>
+              </li>
+              <li>
+                <router-link to="/catalog" class="grey-text text-lighten-3">Catalog</router-link>
+              </li>
+              <li>
+                <router-link to="/about" class="grey-text text-lighten-3">About</router-link>
+              </li>
+              <li>
+                <router-link to="/contact" class="grey-text text-lighten-3">Contact Us</router-link>
+              </li>
             </ul>
           </div>
         </div>
       </div>
       <div class="footer-copyright">
         <div class="container">
-          © 2014 Copyright Text
+          © 2021 Teltan All Rights Reserved
           <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
         </div>
       </div>
@@ -101,12 +107,14 @@ import {mapGetters, mapActions} from 'vuex'
 
 export default {
   name: 'main',
-  computed: mapGetters(['getUser']),
+  computed: mapGetters(['getUser', 'getBalance']),
   methods: {
-    ...mapActions(['logout'])
+    ...mapActions(['logout', 'fetchBalance'])
   },
-  mounted() {
-    M.Dropdown.init(this.$refs.dropdown1, {
+  async mounted() {
+    await this.fetchBalance()
+
+    await M.Dropdown.init(this.$refs.dropdown1, {
       coverTrigger: false,
       constrainWidth: false
     })
